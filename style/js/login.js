@@ -9,22 +9,23 @@ function postLogin(){
 
     var request = $.ajax({
         type: 'POST',
-        crossDomain: true,
         url: "https://todo-js-be.herokuapp.com/auth/sign_in",
         data:{
             'email'    : email_login,
             'password' : pass_login
         }
     });
-    request.done(function(data){
-        var localStore_email = data.email;
-        console.log(localStore_email);
-         localStorage.email = email_login;
-         localStorage.password = pass_login;
-        // localStorage.removeItem("password");
-          $(".loading").children().remove();
-          //load vao trang home of user have account
-          directHomeUser();
+    request.done(function(data, textStatus, jqXHR){
+        var uid         = jqXHR.getResponseHeader("Uid");
+        var accessToken = jqXHR.getResponseHeader("Access-Token");
+        var client      = jqXHR.getResponseHeader("Client");
+
+        localStorage.uid = uid;
+        localStorage.accessToken = accessToken;
+        localStorage.client = client;
+        $(".loading").children().remove();
+        //load vao trang home of user have account
+        directHomeUser();
     });
     request.fail(function(){
         console.log("Error");

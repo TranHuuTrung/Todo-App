@@ -18,10 +18,13 @@
         });
         result.done(function(data){
            console.log(data);
-           alert("Đăng kí thành công!");
+           $("div.form-register").hide();
            $(".loading").children().remove();
-           directHome();
-          
+           $('div.success-regis').html('<div class="alert alert-success" style="width:200px; margin: 50px auto; " role="alert">Đăng ký thành công!</div>');
+           setTimeout(function(){
+              directHome();
+              $('div.success-regis').hide();
+           },1000);
         });
         result.fail(function(jqXHR, textStatus){
             console.log("eror");
