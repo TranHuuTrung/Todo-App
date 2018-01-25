@@ -1,0 +1,94 @@
+.nav-home-header{
+    margin-bottom: 0px;
+}
+img.info-header{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 15px;
+    margin-top: 5px;
+}
+.nav-img {
+    margin-right: 10px;
+}
+.nav-img p{
+    line-height: 50px;
+}
+/* navigation left pages */
+.nav-left{
+    background: #3a3939;
+    padding-top: 30px;
+    color: #ffffff;
+    padding-bottom: 20px
+}
+.info-user{
+    margin-bottom: 40px;
+    text-align: center;
+}
+.info-user h3 {
+    margin-top: 15px;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+.info-user i{
+    font-size: 20px;
+    margin-right: 10px;
+}
+.info-user span{
+    line-height: 2;
+}
+.avatar {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    margin-right: 10px;
+    border: 2px solid #ada6a6;
+    padding: 1px;
+}
+.list-group i{
+    margin-right: 10px;
+}
+/* todo part */
+.todolist{
+    background-color: #eeeeee;
+    padding: 20px 20px 10px 20px;
+    margin-top: 40px;
+}
+.todolist h1 {
+    margin: 0;
+    padding-bottom: 20px;
+    text-align: center;
+    font-size: 35px;
+}
+li.ui-state-default {
+    border-bottom: 1px solid #ddd;
+}
+#checkAll {
+    margin-top: 10px;
+}
+.checkbox {
+    position: relative;
+    display: block;
+    min-height: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.todo-footer {
+    background-color: #f4fce8;
+    margin: 15px -20px -10px -20px;
+    padding: 15px 20px;
+}
+#done-items li:last-child {
+    border-bottom: none;
+}
+.remove-item {
+    padding: 3px 5px;
+}
+.form-control {
+    border-radius: 0;
+}
+#done-items li {
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    text-decoration: line-through;
+}

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Todo App</title>
+    <link rel="stylesheet" href="style/css/bootstrap.min.css">
+    <link rel="stylesheet" href="fonts/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style/css/reset.css">
+    <link rel="stylesheet" href="style/css/index.css">
+    <link rel="stylesheet" href="style/css/register.css">
+    <link rel="stylesheet" href="style/css/home.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+</head>
+<body>
+    <div class="container-fluid">
+        <header class="row">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light nav-header nav-home-header">
+                <a class="navbar-brand logo_home logo" href="#">Todo App</a>
+                <button class="nav-button navbar-toggler fl_right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="fa fa-navicon"></span>
+                </button>
+                <div class="nav-link collapse navbar-collapse fl_right" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item nav-img">
+                           <p><img class="info-header fl_left" src="images/admin.png" alt="">Hi, Trần Hữu Trung!</p>
+                        </li>
+                        <li class="nav-item">
+                            <a class="navbar-brand" id="tasklist" href="#">Task Lists</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="navbar-brand" id="logout" href="#" onclick="logout">Logout <i class="fa fa-sign-out logout"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <div class="row">
+            <div class="col-md-2 nav-left">
+                <div class="info-user">
+                    <img class="avatar" src="images/admin.png" alt="">
+                    <h3>Trần Hữu Trung</h3>
+                    <p><span><i class="fa fa-mortar-board"></i>Education : </span><br/>Bach Khoa University</p><br/>
+                    <p><span><i class="fa fa-map-marker"></i>Location :</span> Da Nang</p>
+                </div>
+                <div class="list-group list-group-flush">
+                    <p style="font-size: 25px; margin-bottom: 10px;">Actions</p>
+                    <a class="list-group-item" href="#"><i class="fa fa-sign-out"></i> Logout</a>
+                    <a class="list-group-item" href="#"><i class="fa fa-pencil"></i> Change Password</a>
+                    <a class="list-group-item" href="#"><i class="fa fa-pencil-square-o"></i> Edit profile</a>
+                </div>
+                <div class="list-group list-group-flush">
+                    <p style="font-size: 25px; margin-bottom: 10px;">Task Todo</p>
+                    <a class="list-group-item" href="#"><i class="fa fa-list-ol"></i> Important</a>
+                    <a class="list-group-item" href="#"><i class="fa fa-warning"></i> Warning</a>
+                    <a class="list-group-item" href="#"><i class="fa fa-list-alt"></i> Daily</a>
+                    <a class="list-group-item" href="#"><i class="fa fa-calendar-check-o"></i> Select Lists</a>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="todolist not-done">
+                    <h1>Todos</h1>
+                    <input type="text" class="form-control add-todo" placeholder="Add todo">
+                    <button id="checkAll" class="btn btn-success">Mark all as done</button> 
+                    <hr>
+                    <ul id="sortable" class="list-unstyled ui-sortable">
+                        <li class="ui-state-default">
+                            <div class="checkbox">
+                                <label><input type="checkbox" value="">Take out the trash</label>
+                            </div>
+                        </li>
+                        <li class="ui-state-default">
+                            <div class="checkbox">
+                                <label><input type="checkbox" value="">Buy bread</label>
+                            </div>
+                        </li>
+                        <li class="ui-state-default">
+                            <div class="checkbox">
+                                <label><input type="checkbox" value="">Teach penguins to fly</label>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="todo-footer">
+                        <strong><span class="count-todos">3</span></strong> Items Left
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="todolist">
+                    <h1>Already Done</h1>
+                    <ul id="done-items" class="list-unstyled">
+                        <li>Some item <button class="remove-item btn btn-default btn-xs pull-right fa fa-close"></button></li>                       
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+     <!-- Jquery bootstrap template depend on it -->
+     <script src="style/js/jquery-3.2.1.min.js"></script>
+     <script src="style/js/bootstrap.min.js"></script>
+     <script src="style/js/script.js"></script>
+     <script src="style/js/register.js"></script>
+     <script src="style/js/login.js"></script>
+     <script src="style/js/home.js"></script>
+     <script src="style/js/todos.js"></script>
+     <script src="style/js/logout.js"></script>
+</body>
+</html>

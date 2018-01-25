@@ -1,0 +1,52 @@
+.column-form{
+    margin: 50px auto;
+}
+form{
+    width: 400px;
+    height: 100%;
+    border: 1px solid #dddddd;
+    box-shadow: 0px 2px 15px 0px #dbdbdb;
+    margin: 0px auto;
+    background: #eeeeee;
+    padding: 20px;
+    color: #000000;
+    border-radius: 5px;
+}
+.create-new-account{
+    font-size: 30px;
+    color: #000000;
+    margin-bottom: 10px;
+}
+.feild-form{
+    font-size: 15px;
+    margin-bottom: 30px;
+}
+.feild-form>label{
+    margin-bottom: 5px;
+    font-weight: 400;
+}
+.icon-input input{
+    border: none;
+    width: 88%;
+}
+.icon-input>i{
+    margin: 0px 10px;
+    color: #999999;
+}
+.icon-input{
+    background: #ffffff;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: left;
+}
+.submit-register{
+    position: relative;
+    left: 40%;
+}
+.have-account{
+    margin-top: 20px;
+}
+.fa-spinner {
+    color: #3883de;
+}

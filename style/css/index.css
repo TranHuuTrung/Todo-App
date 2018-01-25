@@ -1,0 +1,64 @@
+/* form san */
+.text-left {
+text-align: left;
+}
+.text-right {
+text-align: right;
+}
+.text-center {
+text-align: center;
+}
+.text-justify {
+text-align: justify;
+}
+.text-nowrap {
+white-space: nowrap;
+}
+.text-lowercase {
+text-transform: lowercase;
+}
+.text-uppercase {
+text-transform: uppercase;
+}
+.text-capitalize {
+text-transform: capitalize;
+}
+/* end form san */
+body{
+    background: #ffffff;
+    font-family: 'Myriad Pro';
+}
+.nav-header{
+    background: #3883de;
+    border-radius: 0px;
+    padding: 5px 20px 5px 60px;
+}
+.nav-header a,.nav-header p{
+    color: #ffffff;
+}
+a.logo {
+    font-size: 30px;
+}
+.nav-item a{
+    font-size: 15px;
+}
+ul.navbar-nav li a:hover {
+    background: #6699CC;
+}
+@media screen and (max-width: 767px){
+    .nav-button{
+        display: block;
+    }
+}
+@media screen and (min-width: 768px){
+    .nav-button{
+        display: none;
+    }
+}
+.welcome{
+    margin-top: 100px;
+}
+.welcome img{
+    width: 100%;
+}
+
