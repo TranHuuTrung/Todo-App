@@ -19,9 +19,10 @@ $("#logout").click(function(){
         // $("#logout").click(function(){
         //     insertHtml(".content", indexUrl);
         //   });
-        var url_redirect = $(location).attr('host')+"/index.html";
-        // console.log(url_redirect);
-        location.href = "http://"+ url_redirect;
+        // var url_redirect = $(location).attr('host')+"/index.html";
+        // // console.log(url_redirect);
+        // location.href = "http://"+ url_redirect;
+        location.pathname = "Todo-App";
     });
     request_logout.fail(function(){
         console.log("Error");
