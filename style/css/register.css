@@ -35,7 +35,7 @@ form.f-login{
 form.f-login .icon-input{
     margin-left: 0px;
 }
-form.f-login #btn-reset {
+.reset_all_login{
     margin-right: 35px;
 }
 .create-new-account{

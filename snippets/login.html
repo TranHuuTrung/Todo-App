@@ -15,7 +15,7 @@
                 <input type="password" placeholder="password" name="password" id="password">
             </div>
         </div>
-        <button class="btn btn-primary submit-register" type="button" id="btn-reset" onclick="reset-login()"> Reset</button>    
+        <button class="btn btn-primary submit-register reset_all_login" type="button" onclick="reset_login()"> Reset</button>    
         <button class="btn btn-primary submit-register" type="button" onclick="postLogin()"> Login</button>
         <div class="have-account text-center">
                 <p>You don't have account? <a href="#">register</a></p>
@@ -23,6 +23,10 @@
     </form>
 </div>
 <script>
+    function reset_login(){
+        $("#email").val("");
+        $("#password").val("");
+    }
     $("form#login-form").validate({
             rules: {
                 'email' :{

@@ -39,7 +39,7 @@
                 <input type="password" id="verify_password" name="verify_password" placeholder="verify password">
             </div>
         </div>
-        <button class="btn btn-primary submit-register" type="button" id="reset" onclick="reset()">Reset</button>
+        <button class="btn btn-primary submit-register reset_all_login" type="button" onclick="clearAll()">Reset</button>
         <button class="btn btn-primary submit-register" type="button" id="submit-register" onclick="postSignUp()">Submit</button>
         <div class="have-account text-center">
              <p>Have an account?<a href="#" onclick="redirectToLogin()" class="login-account">login</a></p>
@@ -47,51 +47,59 @@
     </form>
 </div>
 <script>
-$("form#form-register-validate").validate({
-      rules: {
-         'firstname' :{
-             required: true,
-             minlength: 2,
-             maxlength: 10
-             
-         },
-         'lastname'  : {
-             required: true
-         },
-         'email' :{
-             required: true,
-             email   : true
-         },
-         'password' :{
-             required: true,
-             minlength: 8
-         },
-         'verify_password':{
-             required: true,
-             equalTo: "#password"
-         }
-      },
-      messages: {
-         'firstname' :{
-             required:  "Bạn phải nhập tên vào !",
-             minlength : "Độ dài lớn hơn 1 kí tự !",
-             maxlength : "Độ dài ít hơn 10 kí tự !"
-         },
-         'lastname'  : {
-             required: "Bạn phải nhập tên !"
-         },
-         'email' :{
-             required: "Bạn phải nhập email !",
-             email   : "Email không đúng !"
-         },
-         'password' :{
-             required: "Bạn phải nhập password !",
-             minlength: "Ít nhất 8 kí tự !"
-         },
-         'verify_password':{
-             required: "Bạn phải verify password !",
-             equalTo : "Verify email không trùng khớp!"
-         }
-     }
- });
+    function clearAll(){
+        $("#lastname").val("");
+        $("#firstname").val("");
+        $("#password").val("");
+        $("#email").val("");
+        $("#verify_password").val("");
+        console.log($("#email").val());
+    }
+    $("form#form-register-validate").validate({
+        rules: {
+            'firstname' :{
+                required: true,
+                minlength: 2,
+                maxlength: 10
+                
+            },
+            'lastname'  : {
+                required: true
+            },
+            'email' :{
+                required: true,
+                email   : true
+            },
+            'password' :{
+                required: true,
+                minlength: 8
+            },
+            'verify_password':{
+                required: true,
+                equalTo: "#password"
+            }
+        },
+        messages: {
+            'firstname' :{
+                required:  "Bạn phải nhập tên vào !",
+                minlength : "Độ dài lớn hơn 1 kí tự !",
+                maxlength : "Độ dài ít hơn 10 kí tự !"
+            },
+            'lastname'  : {
+                required: "Bạn phải nhập tên !"
+            },
+            'email' :{
+                required: "Bạn phải nhập email !",
+                email   : "Email không đúng !"
+            },
+            'password' :{
+                required: "Bạn phải nhập password !",
+                minlength: "Ít nhất 8 kí tự !"
+            },
+            'verify_password':{
+                required: "Bạn phải verify password !",
+                equalTo : "Verify email không trùng khớp!"
+            }
+        }
+    });
 </script>
