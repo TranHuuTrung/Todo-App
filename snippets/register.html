@@ -1,55 +1,44 @@
 <div class="success-regis text-center">
-
 </div>
 
 <div class="column-form form-register">
     <h2 class="text-center create-new-account">Create your account</h2>
-    <form> 
+    <form id="form-register-validate"> 
         <div class="feild-form text-center">
             <label for="validationCustom01" class="fl_left">FirstName</label>
             <div class="icon-input">
                 <i class="fa fa-user"></i>
-                <input type="text" id="firstname" name="firstname" placeholder="firt name" required>
-            </div>
-            <div class="invalid-feedback invalid-firstname">
+                <input type="text" id="firstname" name="firstname" placeholder="firt name">
             </div>
         </div> 
         <div class="feild-form text-center">
             <label for="validationCustom01" class="fl_left">LastName</label>
             <div class="icon-input">
                 <i class="fa fa-user"></i>
-                <input type="text" id="lastname" name="lastname" placeholder="lastname" required>
-            </div>
-            <div class="invalid-feedback invalid-lastname">
+                <input type="text" id="lastname" name="lastname" placeholder="lastname">
             </div>
         </div> 
         <div class="feild-form text-center">
             <label for="validationCustom01" class="fl_left">Email</label>
             <div class="icon-input">
                 <i class="fa fa-user"></i>
-                <input type="text" id="email" name="email" placeholder="email" required>
-            </div>
-            <div class="invalid-feedback invalid-email">   
+                <input type="text" id="email" name="email" placeholder="email">
             </div>
         </div>  
         <div class="feild-form text-center">
             <label for="validationCustom01" class="fl_left">Password</label>
             <div class="icon-input">
                 <i class="fa fa-lock"></i>
-                <input type="password" id="password" placeholder="password" required>
-            </div>
-            <div class="invalid-feedback invalid-pass">
+                <input type="password" id="password" name="password" placeholder="password" >
             </div>
         </div>    
         <div class="feild-form text-center">
             <label for="validationCustom01" class="fl_left">Verify Password</label>
             <div class="icon-input">
                 <i class="fa fa-lock"></i>
-                <input type="password" id="verify_password" placeholder="verify password" required>
+                <input type="password" id="verify_password" name="verify_password" placeholder="verify password">
             </div>
-            <div class="invalid-feedback invalid-verify-pass">
-            </div>
-        </div> 
+        </div>
         <button class="btn btn-primary submit-register" type="button" id="reset" onclick="reset()">Reset</button>
         <button class="btn btn-primary submit-register" type="button" id="submit-register" onclick="postSignUp()">Submit</button>
         <div class="have-account text-center">
@@ -57,3 +46,52 @@
         </div> 
     </form>
 </div>
+<script>
+$("form#form-register-validate").validate({
+      rules: {
+         'firstname' :{
+             required: true,
+             minlength: 2,
+             maxlength: 10
+             
+         },
+         'lastname'  : {
+             required: true
+         },
+         'email' :{
+             required: true,
+             email   : true
+         },
+         'password' :{
+             required: true,
+             minlength: 8
+         },
+         'verify_password':{
+             required: true,
+             equalTo: "#password"
+         }
+      },
+      messages: {
+         'firstname' :{
+             required:  "Bạn phải nhập tên vào !",
+             minlength : "Độ dài lớn hơn 1 kí tự !",
+             maxlength : "Độ dài ít hơn 10 kí tự !"
+         },
+         'lastname'  : {
+             required: "Bạn phải nhập tên !"
+         },
+         'email' :{
+             required: "Bạn phải nhập email !",
+             email   : "Email không đúng !"
+         },
+         'password' :{
+             required: "Bạn phải nhập password !",
+             minlength: "Ít nhất 8 kí tự !"
+         },
+         'verify_password':{
+             required: "Bạn phải verify password !",
+             equalTo : "Verify email không trùng khớp!"
+         }
+     }
+ });
+</script>

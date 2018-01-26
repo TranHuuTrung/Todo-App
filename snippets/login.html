@@ -1,24 +1,48 @@
-<div class="column-form" id="login-form">
-        <h2 class="text-center create-new-account">Login</h2>
-        <form class="f-login">
-            <div class="feild-form text-center">
-                <label for="validationCustom01">Email</label>
-                <div class="icon-input">
-                    <i class="fa fa-user"></i>
-                    <input type="text" placeholder="email" id="email" required>
-                </div>
-            </div>  
-            <div class="feild-form text-center">
-                <label for="validationCustom01">Password</label>
-                <div class="icon-input">
-                    <i class="fa fa-lock"></i>
-                    <input type="password" placeholder="password" id="password" required>
-                </div>
+<div class="column-form">
+    <h2 class="text-center create-new-account">Login</h2>
+    <form class="f-login" id="login-form">
+        <div class="feild-form text-center">
+            <label for="validationCustom01">Email</label>
+            <div class="icon-input">
+                <i class="fa fa-user"></i>
+                <input type="text" placeholder="email" name="email" id="email">
             </div>
-            <button class="btn btn-primary submit-register" type="button" id="btn-reset" onclick="reset-login()"> Reset</button>    
-            <button class="btn btn-primary submit-register" type="button" onclick="postLogin()"> Login</button>
-            <div class="have-account text-center">
-                 <p>You don't have account? <a href="#">register</a></p>
-            </div> 
-        </form>
-    </div>
+        </div>  
+        <div class="feild-form text-center">
+            <label for="validationCustom01">Password</label>
+            <div class="icon-input">
+                <i class="fa fa-lock"></i>
+                <input type="password" placeholder="password" name="password" id="password">
+            </div>
+        </div>
+        <button class="btn btn-primary submit-register" type="button" id="btn-reset" onclick="reset-login()"> Reset</button>    
+        <button class="btn btn-primary submit-register" type="button" onclick="postLogin()"> Login</button>
+        <div class="have-account text-center">
+                <p>You don't have account? <a href="#">register</a></p>
+        </div> 
+    </form>
+</div>
+<script>
+    $("form#login-form").validate({
+            rules: {
+                'email' :{
+                    required: true,
+                    email   : true
+                },
+                'password' :{
+                    required: true,
+                    minlength: 8
+                }
+            },
+            messages: {
+                'email' :{
+                    required: "Bạn phải nhập email !",
+                    email   : "Email không đúng !"
+                },
+                'password' :{
+                    required: "Bạn phải nhập password !",
+                    minlength: "Ít nhất 8 kí tự !"
+                }
+            }
+        });
+</script>

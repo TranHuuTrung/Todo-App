@@ -79,8 +79,7 @@ form.f-login #btn-reset {
 }
 
 /* vadilation for info user */
-.invalid-feedback{
-    padding-top: 5px;
-    /* display: none; */
+.error{
+    font-weight: 200;
     color: red;
 }
