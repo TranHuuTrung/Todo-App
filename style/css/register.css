@@ -1,8 +1,25 @@
 .column-form{
-    margin: 50px auto;
+    margin: 40px auto;
+}
+@media screen and (max-width: 550px){
+    form{
+        width: 400px;
+    }
+    .icon-input input {
+        border: none;
+        width: 80%;
+    }
+}
+@media screen and (min-width: 551px){
+    form{
+        width: 500px;
+    }
+    .icon-input input{
+        border: none;
+        width: 88%;
+    }
 }
 form{
-    width: 400px;
     height: 100%;
     border: 1px solid #dddddd;
     box-shadow: 0px 2px 15px 0px #dbdbdb;
@@ -12,6 +29,15 @@ form{
     color: #000000;
     border-radius: 5px;
 }
+form.f-login{
+    width: 400px;
+}
+form.f-login .icon-input{
+    margin-left: 0px;
+}
+form.f-login #btn-reset {
+    margin-right: 35px;
+}
 .create-new-account{
     font-size: 30px;
     color: #000000;
@@ -19,15 +45,12 @@ form{
 }
 .feild-form{
     font-size: 15px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 .feild-form>label{
     margin-bottom: 5px;
     font-weight: 400;
-}
-.icon-input input{
-    border: none;
-    width: 88%;
+    padding-top: 15px;
 }
 .icon-input>i{
     margin: 0px 10px;
@@ -39,14 +62,25 @@ form{
     border-radius: 5px;
     padding: 10px;
     text-align: left;
+    margin-left: 110px;
 }
 .submit-register{
     position: relative;
-    left: 40%;
+    left: 32%;
+}
+#reset{
+    margin-right: 50px;
 }
 .have-account{
     margin-top: 20px;
 }
 .fa-spinner {
     color: #3883de;
+}
+
+/* vadilation for info user */
+.invalid-feedback{
+    padding-top: 5px;
+    /* display: none; */
+    color: red;
 }

@@ -6,26 +6,51 @@
     <h2 class="text-center create-new-account">Create your account</h2>
     <form> 
         <div class="feild-form text-center">
-            <label for="validationCustom01">Email</label>
+            <label for="validationCustom01" class="fl_left">FirstName</label>
+            <div class="icon-input">
+                <i class="fa fa-user"></i>
+                <input type="text" id="firstname" name="firstname" placeholder="firt name" required>
+            </div>
+            <div class="invalid-feedback invalid-firstname">
+            </div>
+        </div> 
+        <div class="feild-form text-center">
+            <label for="validationCustom01" class="fl_left">LastName</label>
+            <div class="icon-input">
+                <i class="fa fa-user"></i>
+                <input type="text" id="lastname" name="lastname" placeholder="lastname" required>
+            </div>
+            <div class="invalid-feedback invalid-lastname">
+            </div>
+        </div> 
+        <div class="feild-form text-center">
+            <label for="validationCustom01" class="fl_left">Email</label>
             <div class="icon-input">
                 <i class="fa fa-user"></i>
                 <input type="text" id="email" name="email" placeholder="email" required>
             </div>
+            <div class="invalid-feedback invalid-email">   
+            </div>
         </div>  
         <div class="feild-form text-center">
-            <label for="validationCustom01">Password</label>
+            <label for="validationCustom01" class="fl_left">Password</label>
             <div class="icon-input">
                 <i class="fa fa-lock"></i>
                 <input type="password" id="password" placeholder="password" required>
             </div>
+            <div class="invalid-feedback invalid-pass">
+            </div>
         </div>    
         <div class="feild-form text-center">
-            <label for="validationCustom01">Password confirm</label>
+            <label for="validationCustom01" class="fl_left">Verify Password</label>
             <div class="icon-input">
                 <i class="fa fa-lock"></i>
-                <input type="password" id="password_confirm" placeholder="confirm password" required>
+                <input type="password" id="verify_password" placeholder="verify password" required>
+            </div>
+            <div class="invalid-feedback invalid-verify-pass">
             </div>
         </div> 
+        <button class="btn btn-primary submit-register" type="button" id="reset" onclick="reset()">Reset</button>
         <button class="btn btn-primary submit-register" type="button" id="submit-register" onclick="postSignUp()">Submit</button>
         <div class="have-account text-center">
              <p>Have an account?<a href="#" onclick="redirectToLogin()" class="login-account">login</a></p>
