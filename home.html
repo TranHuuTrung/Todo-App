@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="style/css/index.css">
     <link rel="stylesheet" href="style/css/register.css">
     <link rel="stylesheet" href="style/css/home.css">
+    <link rel="stylesheet" href="style/css/todo-title.css">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 </head>
 <body>
@@ -52,47 +53,26 @@
                 </div>
                 <div class="list-group list-group-flush">
                     <p style="font-size: 25px; margin-bottom: 10px;">Task Todo</p>
-                    <a class="list-group-item" href="#"><i class="fa fa-calendar-check-o"></i> New Todo</a>
-                    <a class="list-group-item" href="#"><i class="fa fa-list-ol"></i> Important</a>
+                    <a class="list-group-item" href="#todo-title-box" id="new-todo"><i class="fa fa-calendar-check-o"></i> New Todo</a>
+                        <div id="todo-title-box" class="todo-title">
+                            <p class="login_title"> Tạo mới todo</p>
+                            <a href="#" class="close"><img src="close.png" class="img-close" title="Close Window" alt="Close" /></a>
+                            <form class="login-content">
+                                <label class="username">
+                                <span>Tên tiêu đề</span>
+                                <input id="name-todo-title" name="name-todo-title" value="" type="text" autocomplete="on" placeholder="name todo title">
+                                </label>
+                                <button class="button submit-button" type="button">Trở lại</button>
+                                <button class="button submit-button" type="button">Tạo mới</button>
+                            </form>
+                        </div>
+                    <a class="list-group-item" href="#"><i class="fa fa-list-ol"></i> List Todos</a>
                     <a class="list-group-item" href="#"><i class="fa fa-warning"></i> Warning</a>
                     <a class="list-group-item" href="#"><i class="fa fa-list-alt"></i> Daily</a>
                 </div>
             </div>
-            <div class="col-md-5">
-                <div class="todolist not-done">
-                    <h1>Todos</h1>
-                    <input type="text" class="form-control add-todo" placeholder="Add todo">
-                    <button id="checkAll" class="btn btn-success">Mark all as done</button> 
-                    <hr>
-                    <ul id="sortable" class="list-unstyled ui-sortable">
-                        <li class="ui-state-default">
-                            <div class="checkbox">
-                                <label><input type="checkbox" value="">Take out the trash</label>
-                            </div>
-                        </li>
-                        <li class="ui-state-default">
-                            <div class="checkbox">
-                                <label><input type="checkbox" value="">Buy bread</label>
-                            </div>
-                        </li>
-                        <li class="ui-state-default">
-                            <div class="checkbox">
-                                <label><input type="checkbox" value="">Teach penguins to fly</label>
-                            </div>
-                        </li>
-                    </ul>
-                    <div class="todo-footer">
-                        <strong><span class="count-todos">3</span></strong> Items Left
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="todolist">
-                    <h1>Already Done</h1>
-                    <ul id="done-items" class="list-unstyled">
-                        <li>Some item <button class="remove-item btn btn-default btn-xs pull-right fa fa-close"></button></li>                       
-                    </ul>
-                </div>
+            <div class="todo-user">
+
             </div>
         </div>
     </div>
@@ -105,5 +85,6 @@
      <script src="style/js/home.js"></script>
      <script src="style/js/todos.js"></script>
      <script src="style/js/logout.js"></script>
+     <script src="style/js/todo_lists.js"></script>
 </body>
 </html>
