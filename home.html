@@ -47,7 +47,6 @@
                 </div>
                 <div class="list-group list-group-flush">
                     <p style="font-size: 25px; margin-bottom: 10px;">Actions</p>
-                    <a class="list-group-item" href="#"><i class="fa fa-sign-out"></i> Logout</a>
                     <a class="list-group-item" href="#"><i class="fa fa-pencil"></i> Change Password</a>
                     <a class="list-group-item" href="#"><i class="fa fa-pencil-square-o"></i> Edit profile</a>
                 </div>
@@ -55,15 +54,14 @@
                     <p style="font-size: 25px; margin-bottom: 10px;">Task Todo</p>
                     <a class="list-group-item" href="#todo-title-box" id="new-todo"><i class="fa fa-calendar-check-o"></i> New Todo</a>
                         <div id="todo-title-box" class="todo-title">
-                            <p class="login_title"> Tạo mới todo</p>
-                            <a href="#" class="close"><img src="close.png" class="img-close" title="Close Window" alt="Close" /></a>
-                            <form class="login-content">
+                            <p class="login_title"> New Todos  <a href="#" class="close"><i class="fa fa-close icon-close"></i></a></p>
+                            <form class="login-content" id="validate-frmTitle">
                                 <label class="username">
-                                <span>Tên tiêu đề</span>
+                                <span>Todo Title</span>
                                 <input id="name-todo-title" name="name-todo-title" value="" type="text" autocomplete="on" placeholder="name todo title">
                                 </label>
-                                <button class="button submit-button" type="button">Trở lại</button>
-                                <button class="button submit-button" type="button">Tạo mới</button>
+                                <button class="btn btn-danger cancel" type="button">Cancel</button>
+                                <button class="btn btn-success add-todo-title-frm" type="button">Add</button>
                             </form>
                         </div>
                     <a class="list-group-item" href="#"><i class="fa fa-list-ol"></i> List Todos</a>
@@ -72,13 +70,13 @@
                 </div>
             </div>
             <div class="todo-user">
-
             </div>
         </div>
     </div>
      <!-- Jquery bootstrap template depend on it -->
      <script src="style/js/jquery-3.2.1.min.js"></script>
      <script src="style/js/bootstrap.min.js"></script>
+     <script src="style/js/jquery.validate.min.js"></script>
      <script src="style/js/script.js"></script>
      <script src="style/js/register.js"></script>
      <script src="style/js/login.js"></script>
@@ -86,5 +84,19 @@
      <script src="style/js/todos.js"></script>
      <script src="style/js/logout.js"></script>
      <script src="style/js/todo_lists.js"></script>
+     <script>
+        $("form#validate-frmTitle").validate({
+                rules: {
+                    'name-todo-title' :{
+                        required: true
+                    }
+                },
+                messages: {
+                    'name-todo-title' :{
+                        required: "Bạn không được để trống!",
+                    }
+                }
+            });
+    </script>
 </body>
 </html>

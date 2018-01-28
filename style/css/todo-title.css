@@ -95,6 +95,7 @@
     width: 370px;
     font-size: 15px;
     font-weight: 200;
+    margin-bottom: 20px;
 }
 #todo-title-box .submit-button{
     display: inline-block;

@@ -1,4 +1,5 @@
 $(document).ready(function(){
+// $(window).load(function(){
     //call function
     countTodos();
     // all done btn
