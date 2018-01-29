@@ -13,15 +13,10 @@ $("#logout").click(function(){
     });
     request_logout.done(function(){
         console.log("Logout");
-        localStorage.removeItem('uid');
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('client');
-        // $("#logout").click(function(){
-        //     insertHtml(".content", indexUrl);
-        //   });
-        // var url_redirect = $(location).attr('host')+"/index.html";
-        // // console.log(url_redirect);
-        // location.href = "http://"+ url_redirect;
+        // localStorage.removeItem('uid');
+        // localStorage.removeItem('accessToken');
+        // localStorage.removeItem('client');
+        localStorage.clear();
         location.pathname = "Todo-App";
     });
     request_logout.fail(function(){
