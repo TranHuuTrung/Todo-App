@@ -92,3 +92,16 @@ li.ui-state-default {
     border-bottom: 1px solid #ddd;
     text-decoration: line-through;
 }
+
+/* phan hien thi tat ca cac todo cua user */
+span.right-item {
+    position: absolute;
+    right: 100px;
+}
+.right-item i {
+    font-size: 20px;
+    margin-right: 15px;
+}
+.all-todo-list li{
+    font-size: 
+}
