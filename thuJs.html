@@ -1,4 +1,5 @@
 $("#new-todo").on("click",function(){
+    // confirm("./snippets/loading.html");
     //lấy giá trị thuộc tính href - chính là phần tử "#login-box"
     var loginBox = $(this).attr('href');
     
@@ -39,7 +40,7 @@ function getIdTodoTitle(){
         console.log("Lỗi");
     });
 }
-//get all todo from api for user id de hien thi cho tasklist
+//get all todo from api for user id
 function getAllTodo(){
     var requestTitle = $.ajax({
         type: 'GET',
@@ -59,17 +60,11 @@ function getAllTodo(){
         console.log("Lỗi");
     });
 }
-//task list click 
-var taskListUrl = "./snippets/task-list.html";
-$("#tasklist").on("click", function(){
-   $(".todo-user").load(taskListUrl);
-   getAllTodo();
-});
-
 //khi click add todo
  $("button.add-todo-title-frm").on('click', function(){
     if($("form#validate-frmTitle").valid()){
         var name_titleTodo = $("#name-todo-title").val();
+        // alert(name_titleTodo);
         $("#name-todo-title").val('');
         $('#over, #todo-title-box').fadeOut(300 , function() {
             $('#over').remove();  
@@ -94,10 +89,19 @@ $("#tasklist").on("click", function(){
         });
         request_create.fail(function(){
             console.log("Error");
-        }); 
+        });
+        
     }
     return false;
  });
+
+ //task list click 
+ var taskListUrl = "./snippets/task-list.html";
+ $("#tasklist").on("click", function(){
+    $(".todo-user").load(taskListUrl);
+    getAllTodo();
+ });
+
 
  //create todo item for todo group
  $(document).on("keypress", "#inputCreate-itemTodo", function() {
@@ -117,7 +121,7 @@ $("#tasklist").on("click", function(){
         data: JSON.stringify(todoName)
       });
       requestCreateTodo.done(function(data, textStatus, jqXHR) {
-        createItemTodo();
+        updateTodoTask();
       });
       requestCreateTodo.fail(function(){
           console.log("Fail");
@@ -125,59 +129,29 @@ $("#tasklist").on("click", function(){
 
     }
   });
-//create item todo for new Todos
-function createItemTodo(){
-    var listId = $("#TitleTodoLists #nameOfTodoList").attr('list-id');
-    // console.log(listId);
-    var CallCreateTask = $.ajax({
-        url: "https://todo-js-be.herokuapp.com/todo_lists/"+listId+"/todos",
-        method: "GET",
-        headers: {
-            'access-token'  : localStorage.accessToken,
-            'uid' : localStorage.uid,
-            'client': localStorage.client
-        },
-    });
-    CallCreateTask.done(function(data, textStatus, jqXHR){
-        console.log(data);
-        $("#sortable").html("");
-        for(var i = 0; i< data.length; i++) {
-            if (data[i].done == false) {
-                var markup = '<li class="ui-state-default"><div class="checkbox"><label><input type="checkbox" value="" todo-id ="'+data[i].id+'" />'+ data[i].name +'</label></div></li>';
-                $('#sortable').append(markup);
-                countTodos();
-            }
-        }
-    });
-}
-
-var viewTodoUrl = "./snippets/view-todo.html";
-//Click on Title todolist in task list
-$(document).on("click", ".title-todo-list", function(){
-    $(".todo-user").load(viewTodoUrl);
-    var listId = $(this).attr('list-id');
-    //hien thi toan bo cac thong tin ma listId dang co
-    var settitle = $.ajax({
-        url: "https://todo-js-be.herokuapp.com/todo_lists",
-        method: "GET",
-        headers: {
-            'access-token'  : localStorage.accessToken,
-            'uid' : localStorage.uid,
-            'client': localStorage.client
-        },
-    });
-    settitle.done(function(data, textStatus, jqXHR){
-        for(var i = 0; i < data.length; i++){
-            if( data[i].id == listId){
-                var nameTodoView = data[i].name;
-            }
-        }
-        $("#TitleTodoLists").append('<h1 id="nameOfTodoList" list-id = "'+listId+'">'+nameTodoView+'</h1>');
-        updateTodoTask();
-    });
-});
-
-
+// khi click vao nut checkbox thi se chuyen item qua phan done
+// $(document).on("click", "#check-done", function() {
+// // $("#sortable .ui-state-default .checkbox").on("click", function(){
+//     if($(this).is(":checked")){
+//         var listId = $("#nameOfTodoList").attr('list-id');
+//         var todoId = $(this).attr("todo-id");
+//         var todoStatus = {done: true};
+//         $.ajax({
+//           url: "https://todo-js-be.herokuapp.com/todo_lists/"+listId+"/todos/"+todoId,
+//           method: "PATCH",
+//           headers: {
+//             'access-token'  : localStorage.accessToken,
+//             'uid' : localStorage.uid,
+//             'client': localStorage.client
+//           },
+//           contentType : 'application/json',
+//           data: JSON.stringify(todoStatus)
+//         }).done(function(data, textStatus, jqXHR) {
+//           //update todo ui
+//           updateTodoTask();
+//         });
+//     }
+// });
 //update task not done and done
 function updateTodoTask() {
     var listId = $("#TitleTodoLists #nameOfTodoList").attr('list-id');
@@ -194,15 +168,14 @@ function updateTodoTask() {
     CallUpdateTask.done(function(data, textStatus, jqXHR){
         console.log(data);
         $("#sortable").html("");
-        // $("#done-items").html("");
-        for(var i = 0; i< data.length; i++) {
+        $("#done-items").html("");
+        for(var i = data.length; i >= 0; i--) {
           if (data[i].done == false) {
             var markup = '<li class="ui-state-default"><div class="checkbox"><label><input type="checkbox" value="" todo-id ="'+data[i].id+'" />'+ data[i].name +'</label></div></li>';
             $('#sortable').append(markup);
-            countTodos();
-            // $('.count-todos').text(data.length); //count todo left //cai nay phai lay do dai cua ul tổng  li 
+            $('.count-todos').text(data.length); //count todo left //cai nay phai lay do dai cua ul tổng  li 
           } else {
-            $("#done-items").append(' <li class="todo-itemDone"><p>'+data[i].name+'</p><a href="#" class="delete-todoDone" todo-id="'+data[i].id+'"><i class="fa fa-close"></i></a></li>');
+            $("#done-items").append('<div class="todo-item form-check"><p><del>'+data[i].name+'</del></p><div class="btn-delete-todo" todo-id="'+data[i].id+'"><i class="far fa-window-close"></i></div></div>');
           }
         }
     });
@@ -212,34 +185,9 @@ function updateTodoTask() {
     var count = $("#sortable li").length;
     $('.count-todos').html(count); //ghi vao muc co class count-todo
 }
-
-//delete todo list
-$(document).on("click", ".delete-todo-list", function(){
-   if( confirm("Bạn xóa Todo này chứ?")){
-    var listId = $(this).attr('list-id');
-    $("#taskList-Title").addClass('text-center');
-    $("#taskList-Title").html("<i class='fa fa-spinner fa-pulse fa-3x fa-fw'></i>");
-    var DelTodoList = $.ajax({
-        url: "https://todo-js-be.herokuapp.com/todo_lists/"+listId,
-        method: "DELETE",
-        contentType : 'application/json',
-        headers: {
-            'access-token'  : localStorage.accessToken,
-            'uid' : localStorage.uid,
-            'client': localStorage.client
-        },
-    });
-    DelTodoList.done(function(data, textStatus, jqXHR){
-        $("#taskList-Title").removeClass('text-center');
-        $("#taskList-Title").children().remove();
-        getAllTodo();
-    });
-    DelTodoList.fail(function(){
-        $("#taskList-Title").removeClass('text-center');
-        $("#taskList-Title").children().remove();
-        getAllTodo();
-    });
-   }else{
-        
-   }
-});
+  //create task
+// function createTodo(text){
+//     var markup = '<li class="ui-state-default"><div class="checkbox"><label><input type="checkbox" value="" todo-id ="'+data[i].id+'" />'+ data[i].name +'</label></div></li>';
+//     $('#sortable').append(markup);
+//     // $('.add-todo').val('');
+// }

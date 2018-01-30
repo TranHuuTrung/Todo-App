@@ -132,3 +132,21 @@ a.title-todo-list:hover,a.title-todo-list:visited {
 label#TitleTodoLists {
     width: 100%;
 }
+.home-createTodo{
+    text-align: center;
+    margin-top: 20px;
+}
+.todoCreateListItem li:first-child{
+    margin-top: 20px;
+}
+.todoCreateListItem li:last-child{
+    border: none;
+}
+.todo-itemDone p {
+    display: inline-block;
+    width: 450px;
+}
+.delete-todoDone i {
+    color: red;
+    font-size: 25px;
+}

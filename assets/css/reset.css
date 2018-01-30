@@ -71,3 +71,6 @@ html[xmlns] .clearfix {
     width: 100%;
     position: fixed;
 }
+.text-center{
+    text-align: center;
+}
