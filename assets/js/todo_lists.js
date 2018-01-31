@@ -243,3 +243,40 @@ $(document).on("click", ".delete-todo-list", function(){
         
    }
 });
+
+//Edit name todo list
+$(document).on("click", ".edit-todo-list", function(){
+    var idEdit = $(this).attr('list-id');
+    var newNameTodo = prompt("Nhập tên mới cho TodoList");
+    if (newNameTodo == null || newNameTodo == "") {
+        console.log("error!");
+    } else {
+        $("#taskList-Title").addClass('text-center');
+        $("#taskList-Title").html("<i class='fa fa-spinner fa-pulse fa-3x fa-fw'></i>");
+        var editName = {name:newNameTodo};
+        var requestEdit = $.ajax({
+            url: "https://todo-js-be.herokuapp.com/todo_lists/"+idEdit,
+            method: "PATCH",
+            contentType : 'application/json',
+            headers: {
+                'access-token'  : localStorage.accessToken,
+                'uid' : localStorage.uid,
+                'client': localStorage.client
+            },
+            data: JSON.stringify(editName)
+        });
+        requestEdit.done(function(data, textStatus, jqXHR) {
+            $("#taskList-Title").removeClass('text-center');
+            $("#taskList-Title").children().remove();
+            getAllTodo();
+        });
+        requestEdit.fail(function(){
+            $("#taskList-Title").removeClass('text-center');
+            $("#taskList-Title").children().remove();
+            getAllTodo();
+        });
+    }
+
+    // if( prompt("Nhập tên mới cho TodoList")){
+    // }
+});

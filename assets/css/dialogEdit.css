@@ -1,0 +1,9 @@
+.dialog-header {
+    padding: 12px 20px;
+    background-color: #3883de;
+  }
+  .dialog-content {
+    padding: 30px 20px;
+    color: rgba(128, 123, 127, 0.933);
+    background-color: #fff;
+}
