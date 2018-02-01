@@ -63,7 +63,7 @@ img.info-header{
 li.ui-state-default {
     border-bottom: 1px solid #ddd;
 }
-#checkAll {
+#checkDoneAll {
     margin-top: 10px;
 }
 .checkbox {
@@ -149,4 +149,7 @@ label#TitleTodoLists {
 .delete-todoDone i {
     color: red;
     font-size: 25px;
+}
+li.todo-itemDone p {
+    text-decoration-line: line-through;
 }

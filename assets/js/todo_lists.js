@@ -177,11 +177,9 @@ $(document).on("click", ".title-todo-list", function(){
     });
 });
 
-
 //update task not done and done
 function updateTodoTask() {
     var listId = $("#TitleTodoLists #nameOfTodoList").attr('list-id');
-    console.log(listId);
     var CallUpdateTask = $.ajax({
         url: "https://todo-js-be.herokuapp.com/todo_lists/"+listId+"/todos",
         method: "GET",
@@ -192,7 +190,6 @@ function updateTodoTask() {
         },
     });
     CallUpdateTask.done(function(data, textStatus, jqXHR){
-        console.log(data);
         $("#sortable").html("");
         // $("#done-items").html("");
         for(var i = 0; i< data.length; i++) {
@@ -212,6 +209,92 @@ function updateTodoTask() {
     var count = $("#sortable li").length;
     $('.count-todos').html(count); //ghi vao muc co class count-todo
 }
+
+//click checkbox in item on view todo
+$(document).on("click", ".not-done .checkbox input", function(){
+     var idItemTodo = $(this).attr('todo-id');
+     var todo_list_id = $(".not-done #TitleTodoLists #nameOfTodoList").attr('list-id');
+     var  dataSend = {done: true};
+     var changeDone = $.ajax({
+        url: "https://todo-js-be.herokuapp.com/todo_lists/"+todo_list_id+"/todos/"+idItemTodo,
+        method: "PATCH",
+        headers: {
+            'access-token'  : localStorage.accessToken,
+            'uid' : localStorage.uid,
+            'client': localStorage.client
+        }, 
+        contentType : 'application/json',
+        data: JSON.stringify(dataSend),
+     });
+     changeDone.done(function(data, textStatus, jqXHR){
+        $("#sortable").html("");
+        $("#done-items").html("");
+        updateTodoTask();
+        countTodos();
+     });
+     changeDone.fail(function(){
+        console.log("Lỗi change done");
+     });
+});
+//click button delete in item on view todo
+$(document).on("click", "#done-items .delete-todoDone", function(){
+    var idDeleteTodo = $(this).attr('todo-id');
+    var todo_list_id = $(".not-done #TitleTodoLists #nameOfTodoList").attr('list-id');
+    var deleteTodo = $.ajax({
+        url: "https://todo-js-be.herokuapp.com/todo_lists/"+todo_list_id+"/todos/"+idDeleteTodo,
+        method: "DELETE",
+        headers: {
+            'access-token'  : localStorage.accessToken,
+            'uid' : localStorage.uid,
+            'client': localStorage.client
+        }
+     });
+     deleteTodo.done(function(data, textStatus, jqXHR){
+        $("#done-items").html("");
+        updateTodoTask();
+     });
+     deleteTodo.fail(function(){
+        console.log("Lỗi delete");
+     });
+});
+//mark all done click
+$(document).on("click", "#checkDoneAll", function(){
+    var idListCurrent = $(".not-done #TitleTodoLists #nameOfTodoList").attr('list-id');
+    var markAll = $.ajax({
+        url: "https://todo-js-be.herokuapp.com/todo_lists/"+idListCurrent+"/todos",
+        method: "GET",
+        headers: {
+            'access-token'  : localStorage.accessToken,
+            'uid' : localStorage.uid,
+            'client': localStorage.client 
+        }
+    });
+    markAll.done(function(data, textStatus, jqXHR){
+        $("#done-items").html("");
+        $("#sortable").html("");
+        for(var i = 0; i < data.length; i++){
+            if(data[i].done === false){
+            var idMarkDone = data[i].id;
+            var statusMark = {done: true};
+            var requestMark = $.ajax({
+                url: "https://todo-js-be.herokuapp.com/todo_lists/"+idListCurrent+"/todos/"+idMarkDone,
+                method: "PATCH",
+                headers: {
+                    'access-token'  : localStorage.accessToken,
+                    'uid' : localStorage.uid,
+                    'client': localStorage.client
+                },
+                contentType : 'application/json',
+                data: JSON.stringify(statusMark)
+            });
+            requestMark.done(function(data, textStatus, jqXHR){
+                updateTodoTask();
+                countTodos();
+            });
+            }
+        }
+    });  
+})
 
 //delete todo list
 $(document).on("click", ".delete-todo-list", function(){
