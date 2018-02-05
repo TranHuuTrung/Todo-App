@@ -12,7 +12,7 @@ function postLogin(){
 
         var request = $.ajax({
             type: 'POST',
-            url: "https://todo-js-be.herokuapp.com/auth/sign_in",
+            url: "https://herokutuan.herokuapp.com/auth/sign_in",
             data:{
                 'email'    : email_login,
                 'password' : pass_login

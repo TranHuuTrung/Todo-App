@@ -14,7 +14,7 @@
             var result = $.ajax({
                 type: 'POST',
                 crossDomain: true,
-                url : "https://todo-js-be.herokuapp.com/auth",
+                url : "https://herokutuan.herokuapp.com/auth",
                 data: {
                     'first_name' : firstname_user,
                     'last_name'  : lastname_user,
