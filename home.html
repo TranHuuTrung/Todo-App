@@ -48,7 +48,7 @@
                 </div>
                 <div class="list-group list-group-flush">
                     <p style="font-size: 25px; margin-bottom: 10px;">Actions</p>
-                    <a class="list-group-item" href="#"><i class="fa fa-pencil"></i> Change Password</a>
+                    <a class="list-group-item" href="#" id="change-pass"><i class="fa fa-pencil"></i> Change Password</a>
                     <a class="list-group-item" href="#"><i class="fa fa-pencil-square-o"></i> Edit profile</a>
                 </div>
                 <div class="list-group list-group-flush">
@@ -65,7 +65,7 @@
                                 <button class="btn btn-success add-todo-title-frm" type="button">Add</button>
                             </form>
                         </div>
-                    <a class="list-group-item" href="#"><i class="fa fa-list-ol"></i> List Todos</a>
+                    <a class="list-group-item" href="#" id="listsTodoNav"><i class="fa fa-list-ol"></i> List Todos</a>
                     <a class="list-group-item" href="#"><i class="fa fa-warning"></i> Warning</a>
                     <a class="list-group-item" href="#"><i class="fa fa-list-alt"></i> Daily</a>
                 </div>
@@ -82,22 +82,21 @@
      <script src="assets/js/register.js"></script>
      <script src="assets/js/login.js"></script>
      <script src="assets/js/home.js"></script>
-     <script src="assets/js/todos.js"></script>
      <script src="assets/js/logout.js"></script>
      <script src="assets/js/todo_lists.js"></script>
      <script>
         $("form#validate-frmTitle").validate({
-                rules: {
-                    'name-todo-title' :{
-                        required: true
-                    }
-                },
-                messages: {
-                    'name-todo-title' :{
-                        required: "Bạn không được để trống!",
-                    }
+            rules: {
+                'name-todo-title' :{
+                    required: true
                 }
-            });
+            },
+            messages: {
+                'name-todo-title' :{
+                    required: "Bạn không được để trống!",
+                }
+            }
+        });
     </script>
 </body>
 </html>

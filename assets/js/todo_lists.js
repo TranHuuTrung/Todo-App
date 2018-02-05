@@ -59,13 +59,48 @@ function getAllTodo(){
         console.log("Lỗi");
     });
 }
+// divices pages
+$(document).ready(function(){
+    var show_per_page = 5;
+    //getting the amount of elements inside content div
+    var number_of_items = $('#taskList-Title li').length;
+    console.log("num " + number_of_items);
+    //calculate the number of pages we are going to have
+    var number_of_pages = Math.ceil(number_of_items/show_per_page);
+    //set the value of our hidden input fields
+    $('#current_page').val(0);
+    $('#show_per_page').val(show_per_page);
+    var navigation_html = '<a class="previous_link" href="javascript:previous();">«</a>';
+    
+    var current_link = 0;
+    while (number_of_pages > current_link){
+        navigation_html += '<a class="page_link" href="javascript:go_to_page(' + current_link +')" longdesc="' + current_link +'">'+ (current_link + 1) +'</a>';
+        current_link++;
+    }
+    navigation_html += '<a class="next_link" href="javascript:next();">»</a>';
+
+    $('#page_navigation').html(navigation_html);
+
+    //add active_page class to the first page link
+    $('#page_navigation .page_link:first').addClass('active_page');
+     //hide all the elements inside content div
+     $('#taskList-Title').children().css('display', 'none');
+     
+    //and show the first n (show_per_page) elements
+    $('#taskList-Title').children().slice(0, show_per_page).css('display', 'block');
+})
 //task list click 
 var taskListUrl = "./snippets/task-list.html";
 $("#tasklist").on("click", function(){
    $(".todo-user").load(taskListUrl);
-   getAllTodo();
+   getAllTodo();   
+//    devicePage();
 });
-
+//list todos clicked
+$('#listsTodoNav').on("click", function(){
+    $(".todo-user").load(taskListUrl);
+    getAllTodo();
+})
 //khi click add todo
  $("button.add-todo-title-frm").on('click', function(){
     if($("form#validate-frmTitle").valid()){
@@ -174,6 +209,7 @@ $(document).on("click", ".title-todo-list", function(){
         }
         $("#TitleTodoLists").append('<h1 id="nameOfTodoList" list-id = "'+listId+'">'+nameTodoView+'</h1>');
         updateTodoTask();
+        
     });
 });
 
@@ -260,40 +296,38 @@ $(document).on("click", "#done-items .delete-todoDone", function(){
 //mark all done click
 $(document).on("click", "#checkDoneAll", function(){
     var idListCurrent = $(".not-done #TitleTodoLists #nameOfTodoList").attr('list-id');
-    var markAll = $.ajax({
-        url: "https://todo-js-be.herokuapp.com/todo_lists/"+idListCurrent+"/todos",
+    var countItem = $(".not-done #sortable li").length;
+    for(i = 0; i< countItem; i++){
+        var liTodoItem =  $('.not-done #sortable li').get(i);
+        var inputID = liTodoItem.getElementsByTagName('input')[0];
+        var idDone = $(inputID).attr('todo-id');
+        var statusMark = {done: true};
+        var markAll = $.ajax({
+            url: "https://todo-js-be.herokuapp.com/todo_lists/"+idListCurrent+"/todos/"+idDone,
+            method: "PATCH",
+            headers: {
+                'access-token'  : localStorage.accessToken,
+                'uid' : localStorage.uid,
+                'client': localStorage.client 
+            },
+            contentType : 'application/json',
+            data: JSON.stringify(statusMark)
+        });
+    }
+    $.ajax({
+        url: "https://todo-js-be.herokuapp.com/todo_lists/"+idListCurrent+"/todos/",
         method: "GET",
         headers: {
             'access-token'  : localStorage.accessToken,
             'uid' : localStorage.uid,
-            'client': localStorage.client 
-        }
-    });
-    markAll.done(function(data, textStatus, jqXHR){
-        $("#done-items").html("");
+            'client': localStorage.client
+        }, 
+    }).done(function(){
         $("#sortable").html("");
-        for(var i = 0; i < data.length; i++){
-            if(data[i].done === false){
-            var idMarkDone = data[i].id;
-            var statusMark = {done: true};
-            var requestMark = $.ajax({
-                url: "https://todo-js-be.herokuapp.com/todo_lists/"+idListCurrent+"/todos/"+idMarkDone,
-                method: "PATCH",
-                headers: {
-                    'access-token'  : localStorage.accessToken,
-                    'uid' : localStorage.uid,
-                    'client': localStorage.client
-                },
-                contentType : 'application/json',
-                data: JSON.stringify(statusMark)
-            });
-            requestMark.done(function(data, textStatus, jqXHR){
-                updateTodoTask();
-                countTodos();
-            });
-            }
-        }
-    });  
+        $("#done-items").html("");
+        updateTodoTask();
+        countTodos();
+    }) 
 })
 
 //delete todo list
@@ -359,7 +393,54 @@ $(document).on("click", ".edit-todo-list", function(){
             getAllTodo();
         });
     }
-
-    // if( prompt("Nhập tên mới cho TodoList")){
-    // }
 });
+//click change pasword
+var changepassUrl = "./snippets/changePassword.html";
+$("#change-pass").on("click", function(){
+   $(".todo-user").load(changepassUrl);
+});
+function changePassUser(){
+    if($("form#change-form").valid()){
+        var oldPass = $("#oldpassword").val();
+        var newPass = $("#newpassword").val();
+        var requestChangePass = $.ajax({
+            type: 'PATCH',
+            url: "https://todo-js-be.herokuapp.com/auth/password/edit",
+            headers: {
+                'access-token'  : localStorage.accessToken,
+                'uid' : localStorage.uid,
+                'client': localStorage.client
+            },
+            data: JSON.stringify(newPass)
+        });
+        requestChangePass.done(function(data, textStatus, jqXHR){
+            console.log("done change");
+        })
+    }
+}
+// click share email
+$(document).on("click", "#btn-share", function(){
+    if( $("form#share-form").valid()){
+        var EmailShare = $("#shareEmail").val();
+        var nameTodo   = $("#TitleTodoLists").text();
+        alert(nameTodo);
+        var doneItem = [];
+        var notDoneItem = [];
+        var countItemNotDone = $(".not-done #sortable li").length;
+        var countItemDone = $("#done-items li").length;
+        
+        for(var i = 0; i < countItemNotDone; i++){
+            var liTodoItem =  $('.not-done #sortable li').get(i);
+            var inputID = liTodoItem.getElementsByTagName('label')[0];
+            var nameItem = $(inputID).text();
+            notDoneItem.push(nameItem);
+        }
+        for(var i = 0; i < countItemDone; i++){
+            var liTodoItemDone =  $('#done-items li').get(i);
+            var doneID = liTodoItemDone.getElementsByTagName('p')[0];
+            var nameDoneItem = $(doneID).text();
+            doneItem.push(nameItem);
+        }
+
+    }
+})

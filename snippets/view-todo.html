@@ -11,6 +11,13 @@
                 <strong><span class="count-todos">0</span></strong> Items Left
             </div>
         </div>
+        <div class="share">
+            <form id="share-form">
+                <h4>Share the current list</h4>
+                <input type="text" class="form-control" id="shareEmail" name="emailtoshare" autocomplete="on" placeholder="Email">
+                <button type="submit" class="btn btn-primary" id="btn-share">Share</button>
+            </form>
+        </div>
     </div>
     <div class="col-md-5">
         <div class="todolist">
@@ -20,3 +27,19 @@
         </div>
     </div>
 <!-- </div> -->
+<script>
+     $("form#share-form").validate({
+         rules:{
+            'emailtoshare' :{
+                    required: true,
+                    email   : true
+                }
+         },
+         messages:{
+            'emailtoshare':{
+                required: 'Bạn phải điền vào!',
+                email : 'email không đúng!'
+            }
+         }
+     });
+</script>

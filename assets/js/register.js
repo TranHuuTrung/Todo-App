@@ -8,18 +8,21 @@
             var lastname_user  = $("#lastname").val();
             var email_user     = $("#email").val();
             var password_user  = $("#password").val();
-            var verifypass_user= $("#verify_password").val();
+            // alert(firstname_user);
+            // alert(lastname_user);
             $(".loading").html("<i class='fa fa-spinner fa-pulse fa-3x fa-fw'></i>");
             var result = $.ajax({
                 type: 'POST',
                 crossDomain: true,
                 url : "https://todo-js-be.herokuapp.com/auth",
                 data: {
-                    'first_name': firstname_user,
-                    'last_name' : lastname_user,
+                    'first_name' : firstname_user,
+                    'last_name'  : lastname_user,
                     'email'     : email_user,
                     'password'  : password_user
-                }
+                },
+                // contentType : 'application/json',
+                // data: JSON.stringify(dataSend),
             });
             result.done(function(data){
                 console.log(data);
