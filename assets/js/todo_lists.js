@@ -22,7 +22,7 @@ function getIdTodoTitle(){
     $(".home-createTodo").html("<i class='fa fa-spinner fa-pulse fa-3x fa-fw'></i>");
     var requestTitle = $.ajax({
         type: 'GET',
-        url: "https://herokutuan.herokuapp.com/todo_lists",
+        url: "https://herokutuan.herokuapp.com/task_lists",
         headers:{
             'access-token'  : localStorage.accessToken,
             'uid' : localStorage.uid,
@@ -43,7 +43,7 @@ function getIdTodoTitle(){
 function getAllTodo(){
     var requestTitle = $.ajax({
         type: 'GET',
-        url: "https://herokutuan.herokuapp.com/todo_lists",
+        url: "https://herokutuan.herokuapp.com/task_lists",
         headers:{
             'access-token'  : localStorage.accessToken,
             'uid' : localStorage.uid,
@@ -113,7 +113,7 @@ $('#listsTodoNav').on("click", function(){
         var name ={ name: name_titleTodo};
         var request_create = $.ajax({
             type: 'POST',
-            url: "https://herokutuan.herokuapp.com/todo_lists",
+            url: "https://herokutuan.herokuapp.com/task_lists",
             headers: {
                 'access-token'  : localStorage.accessToken,
                 'uid' : localStorage.uid,
@@ -141,7 +141,7 @@ $('#listsTodoNav').on("click", function(){
       var todoName = {name: $(this).val()};
       $(this).val("");
       var requestCreateTodo = $.ajax({
-        url: "https://herokutuan.herokuapp.com/todo_lists/"+listId+"/todos",
+        url: "https://herokutuan.herokuapp.com/task_lists/"+listId+"/todos",
         method: "POST",
         headers: {
             'access-token'  : localStorage.accessToken,
@@ -165,7 +165,7 @@ function createItemTodo(){
     var listId = $("#TitleTodoLists #nameOfTodoList").attr('list-id');
     // console.log(listId);
     var CallCreateTask = $.ajax({
-        url: "https://herokutuan.herokuapp.com/todo_lists/"+listId+"/todos",
+        url: "https://herokutuan.herokuapp.com/task_lists/"+listId+"/todos",
         method: "GET",
         headers: {
             'access-token'  : localStorage.accessToken,
@@ -193,7 +193,7 @@ $(document).on("click", ".title-todo-list", function(){
     var listId = $(this).attr('list-id');
     //hien thi toan bo cac thong tin ma listId dang co
     var settitle = $.ajax({
-        url: "https://herokutuan.herokuapp.com/todo_lists",
+        url: "https://herokutuan.herokuapp.com/task_lists",
         method: "GET",
         headers: {
             'access-token'  : localStorage.accessToken,
@@ -217,7 +217,7 @@ $(document).on("click", ".title-todo-list", function(){
 function updateTodoTask() {
     var listId = $("#TitleTodoLists #nameOfTodoList").attr('list-id');
     var CallUpdateTask = $.ajax({
-        url: "https://herokutuan.herokuapp.com/todo_lists/"+listId+"/todos",
+        url: "https://herokutuan.herokuapp.com/task_lists/"+listId+"/todos",
         method: "GET",
         headers: {
             'access-token'  : localStorage.accessToken,
@@ -252,7 +252,7 @@ $(document).on("click", ".not-done .checkbox input", function(){
      var todo_list_id = $(".not-done #TitleTodoLists #nameOfTodoList").attr('list-id');
      var  dataSend = {done: true};
      var changeDone = $.ajax({
-        url: "https://herokutuan.herokuapp.com/todo_lists/"+todo_list_id+"/todos/"+idItemTodo,
+        url: "https://herokutuan.herokuapp.com/task_lists/"+todo_list_id+"/todos/"+idItemTodo,
         method: "PATCH",
         headers: {
             'access-token'  : localStorage.accessToken,
@@ -277,7 +277,7 @@ $(document).on("click", "#done-items .delete-todoDone", function(){
     var idDeleteTodo = $(this).attr('todo-id');
     var todo_list_id = $(".not-done #TitleTodoLists #nameOfTodoList").attr('list-id');
     var deleteTodo = $.ajax({
-        url: "https://herokutuan.herokuapp.com/todo_lists/"+todo_list_id+"/todos/"+idDeleteTodo,
+        url: "https://herokutuan.herokuapp.com/task_lists/"+todo_list_id+"/todos/"+idDeleteTodo,
         method: "DELETE",
         headers: {
             'access-token'  : localStorage.accessToken,
@@ -303,7 +303,7 @@ $(document).on("click", "#checkDoneAll", function(){
         var idDone = $(inputID).attr('todo-id');
         var statusMark = {done: true};
         var markAll = $.ajax({
-            url: "https://herokutuan.herokuapp.com/todo_lists/"+idListCurrent+"/todos/"+idDone,
+            url: "https://herokutuan.herokuapp.com/task_lists/"+idListCurrent+"/todos/"+idDone,
             method: "PATCH",
             headers: {
                 'access-token'  : localStorage.accessToken,
@@ -315,7 +315,7 @@ $(document).on("click", "#checkDoneAll", function(){
         });
     }
     $.ajax({
-        url: "https://herokutuan.herokuapp.com/todo_lists/"+idListCurrent+"/todos/",
+        url: "https://herokutuan.herokuapp.com/task_lists/"+idListCurrent+"/todos/",
         method: "GET",
         headers: {
             'access-token'  : localStorage.accessToken,
@@ -337,7 +337,7 @@ $(document).on("click", ".delete-todo-list", function(){
     $("#taskList-Title").addClass('text-center');
     $("#taskList-Title").html("<i class='fa fa-spinner fa-pulse fa-3x fa-fw'></i>");
     var DelTodoList = $.ajax({
-        url: "https://herokutuan.herokuapp.com/todo_lists/"+listId,
+        url: "https://herokutuan.herokuapp.com/task_lists/"+listId,
         method: "DELETE",
         contentType : 'application/json',
         headers: {
@@ -372,7 +372,7 @@ $(document).on("click", ".edit-todo-list", function(){
         $("#taskList-Title").html("<i class='fa fa-spinner fa-pulse fa-3x fa-fw'></i>");
         var editName = {name:newNameTodo};
         var requestEdit = $.ajax({
-            url: "https://herokutuan.herokuapp.com/todo_lists/"+idEdit,
+            url: "https://herokutuan.herokuapp.com/task_lists/"+idEdit,
             method: "PATCH",
             contentType : 'application/json',
             headers: {
