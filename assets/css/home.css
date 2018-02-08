@@ -168,9 +168,6 @@ li.todo-itemDone p {
 .share h4 {
     margin-bottom: 15px;
 }
-.share input {
-    width: 75%;
-}
 @media screen and (max-width: 991px){
     #btn-share {
         bottom: 24px;
@@ -184,8 +181,10 @@ li.todo-itemDone p {
 }
 #btn-share {
     width: 65px;
-    position: absolute;
-    right: 50px;
+}
+.form-check #cb-writeShare{
+    margin-top: 15px;
+    margin-bottom: 20px;
 }
 #page_navigation a{
     padding:3px;

@@ -12,7 +12,7 @@ function postLogin(){
 
         var request = $.ajax({
             type: 'POST',
-            url: "https://herokutuan.herokuapp.com/auth/sign_in",
+            url: urlApifirst+"/auth/sign_in",
             data:{
                 'email'    : email_login,
                 'password' : pass_login
@@ -22,10 +22,12 @@ function postLogin(){
             var uid         = jqXHR.getResponseHeader("Uid");
             var accessToken = jqXHR.getResponseHeader("Access-Token");
             var client      = jqXHR.getResponseHeader("Client");
-
+            // var Id      = data('id');
+            console.log(data);
             localStorage.uid = uid;
             localStorage.accessToken = accessToken;
             localStorage.client = client;
+            // localStorage.userId = Id;
             $(".loading").children().remove();
             //load vao trang home of user have account
             directHomeUser();

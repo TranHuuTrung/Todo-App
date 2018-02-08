@@ -10,12 +10,16 @@ $(document).ready(function(){
         }
     }
     checkLogout();
-    var startUrl = "./home.html";
+    var taskListUrl = "./snippets/task-list.html";
+    function directDefault(){
+        $(".todo-user").load(taskListUrl);
+        getAllTodo(); 
+    }
     //load index page when click logo
     $(".logo_home").click(function(){
-        insertHtml(".content", startUrl);
+        directDefault(); 
     });
-    
+    directDefault(); 
 });
 function previous(){
     new_page = parseInt($('#current_page').val()) - 1;

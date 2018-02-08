@@ -22,7 +22,7 @@ function getIdTodoTitle(){
     $(".home-createTodo").html("<i class='fa fa-spinner fa-pulse fa-3x fa-fw'></i>");
     var requestTitle = $.ajax({
         type: 'GET',
-        url: "https://herokutuan.herokuapp.com/task_lists",
+        url: urlApifirst+"/task_lists",
         headers:{
             'access-token'  : localStorage.accessToken,
             'uid' : localStorage.uid,
@@ -43,7 +43,7 @@ function getIdTodoTitle(){
 function getAllTodo(){
     var requestTitle = $.ajax({
         type: 'GET',
-        url: "https://herokutuan.herokuapp.com/task_lists",
+        url: urlApifirst+"/task_lists",
         headers:{
             'access-token'  : localStorage.accessToken,
             'uid' : localStorage.uid,
@@ -101,7 +101,7 @@ $('#listsTodoNav').on("click", function(){
     $(".todo-user").load(taskListUrl);
     getAllTodo();
 })
-//khi click add todo
+//khi click add todo 
  $("button.add-todo-title-frm").on('click', function(){
     if($("form#validate-frmTitle").valid()){
         var name_titleTodo = $("#name-todo-title").val();
@@ -113,7 +113,7 @@ $('#listsTodoNav').on("click", function(){
         var name ={ name: name_titleTodo};
         var request_create = $.ajax({
             type: 'POST',
-            url: "https://herokutuan.herokuapp.com/task_lists",
+            url: urlApifirst+"/task_lists",
             headers: {
                 'access-token'  : localStorage.accessToken,
                 'uid' : localStorage.uid,
@@ -123,8 +123,10 @@ $('#listsTodoNav').on("click", function(){
             data: JSON.stringify(name)
         });
         request_create.done(function(){
-            $(".todo-user").load("./snippets/todo-create-list-item.html", function(){
+            // $(".todo-user").load("./snippets/todo-create-list-item.html", function(){
+            $(".todo-user").load(viewTodoUrl, function(){
                  getIdTodoTitle();
+                 getAllEmail();
             });
         });
         request_create.fail(function(){
@@ -133,7 +135,6 @@ $('#listsTodoNav').on("click", function(){
     }
     return false;
  });
-
  //create todo item for todo group
  $(document).on("keypress", "#inputCreate-itemTodo", function() {
     if (event.which === 13) {
@@ -141,7 +142,7 @@ $('#listsTodoNav').on("click", function(){
       var todoName = {name: $(this).val()};
       $(this).val("");
       var requestCreateTodo = $.ajax({
-        url: "https://herokutuan.herokuapp.com/task_lists/"+listId+"/todos",
+        url: urlApifirst+"/task_lists/"+listId+"/todos",
         method: "POST",
         headers: {
             'access-token'  : localStorage.accessToken,
@@ -152,7 +153,8 @@ $('#listsTodoNav').on("click", function(){
         data: JSON.stringify(todoName)
       });
       requestCreateTodo.done(function(data, textStatus, jqXHR) {
-        createItemTodo();
+          console.log(data);
+          createItemTodo();
       });
       requestCreateTodo.fail(function(){
           console.log("Fail");
@@ -165,19 +167,19 @@ function createItemTodo(){
     var listId = $("#TitleTodoLists #nameOfTodoList").attr('list-id');
     // console.log(listId);
     var CallCreateTask = $.ajax({
-        url: "https://herokutuan.herokuapp.com/task_lists/"+listId+"/todos",
+        url: urlApifirst+"/task_lists/"+listId+"/todos",
         method: "GET",
         headers: {
             'access-token'  : localStorage.accessToken,
             'uid' : localStorage.uid,
             'client': localStorage.client
-        },
+        }
     });
     CallCreateTask.done(function(data, textStatus, jqXHR){
         console.log(data);
         $("#sortable").html("");
         for(var i = 0; i< data.length; i++) {
-            if (data[i].done == false) {
+            if (data[i].done == null) {
                 var markup = '<li class="ui-state-default"><div class="checkbox"><label><input type="checkbox" value="" todo-id ="'+data[i].id+'" />'+ data[i].name +'</label></div></li>';
                 $('#sortable').append(markup);
                 countTodos();
@@ -193,7 +195,7 @@ $(document).on("click", ".title-todo-list", function(){
     var listId = $(this).attr('list-id');
     //hien thi toan bo cac thong tin ma listId dang co
     var settitle = $.ajax({
-        url: "https://herokutuan.herokuapp.com/task_lists",
+        url: urlApifirst+"/task_lists",
         method: "GET",
         headers: {
             'access-token'  : localStorage.accessToken,
@@ -209,15 +211,14 @@ $(document).on("click", ".title-todo-list", function(){
         }
         $("#TitleTodoLists").append('<h1 id="nameOfTodoList" list-id = "'+listId+'">'+nameTodoView+'</h1>');
         updateTodoTask();
-        
+        getAllEmail();
     });
 });
-
 //update task not done and done
 function updateTodoTask() {
     var listId = $("#TitleTodoLists #nameOfTodoList").attr('list-id');
     var CallUpdateTask = $.ajax({
-        url: "https://herokutuan.herokuapp.com/task_lists/"+listId+"/todos",
+        url: urlApifirst+"/task_lists/"+listId+"/todos",
         method: "GET",
         headers: {
             'access-token'  : localStorage.accessToken,
@@ -227,13 +228,12 @@ function updateTodoTask() {
     });
     CallUpdateTask.done(function(data, textStatus, jqXHR){
         $("#sortable").html("");
-        // $("#done-items").html("");
+        console.log(data);
         for(var i = 0; i< data.length; i++) {
-          if (data[i].done == false) {
+          if (data[i].done == null) {
             var markup = '<li class="ui-state-default"><div class="checkbox"><label><input type="checkbox" value="" todo-id ="'+data[i].id+'" />'+ data[i].name +'</label></div></li>';
             $('#sortable').append(markup);
             countTodos();
-            // $('.count-todos').text(data.length); //count todo left //cai nay phai lay do dai cua ul tổng  li 
           } else {
             $("#done-items").append(' <li class="todo-itemDone"><p>'+data[i].name+'</p><a href="#" class="delete-todoDone" todo-id="'+data[i].id+'"><i class="fa fa-close"></i></a></li>');
           }
@@ -245,14 +245,13 @@ function updateTodoTask() {
     var count = $("#sortable li").length;
     $('.count-todos').html(count); //ghi vao muc co class count-todo
 }
-
 //click checkbox in item on view todo
 $(document).on("click", ".not-done .checkbox input", function(){
      var idItemTodo = $(this).attr('todo-id');
      var todo_list_id = $(".not-done #TitleTodoLists #nameOfTodoList").attr('list-id');
      var  dataSend = {done: true};
      var changeDone = $.ajax({
-        url: "https://herokutuan.herokuapp.com/task_lists/"+todo_list_id+"/todos/"+idItemTodo,
+        url: urlApifirst+"/task_lists/"+todo_list_id+"/todos/"+idItemTodo,
         method: "PATCH",
         headers: {
             'access-token'  : localStorage.accessToken,
@@ -277,7 +276,7 @@ $(document).on("click", "#done-items .delete-todoDone", function(){
     var idDeleteTodo = $(this).attr('todo-id');
     var todo_list_id = $(".not-done #TitleTodoLists #nameOfTodoList").attr('list-id');
     var deleteTodo = $.ajax({
-        url: "https://herokutuan.herokuapp.com/task_lists/"+todo_list_id+"/todos/"+idDeleteTodo,
+        url: urlApifirst+"/task_lists/"+todo_list_id+"/todos/"+idDeleteTodo,
         method: "DELETE",
         headers: {
             'access-token'  : localStorage.accessToken,
@@ -303,7 +302,7 @@ $(document).on("click", "#checkDoneAll", function(){
         var idDone = $(inputID).attr('todo-id');
         var statusMark = {done: true};
         var markAll = $.ajax({
-            url: "https://herokutuan.herokuapp.com/task_lists/"+idListCurrent+"/todos/"+idDone,
+            url: urlApifirst+"/task_lists/"+idListCurrent+"/todos/"+idDone,
             method: "PATCH",
             headers: {
                 'access-token'  : localStorage.accessToken,
@@ -315,7 +314,7 @@ $(document).on("click", "#checkDoneAll", function(){
         });
     }
     $.ajax({
-        url: "https://herokutuan.herokuapp.com/task_lists/"+idListCurrent+"/todos/",
+        url: urlApifirst+"/task_lists/"+idListCurrent+"/todos/",
         method: "GET",
         headers: {
             'access-token'  : localStorage.accessToken,
@@ -329,7 +328,6 @@ $(document).on("click", "#checkDoneAll", function(){
         countTodos();
     }) 
 })
-
 //delete todo list
 $(document).on("click", ".delete-todo-list", function(){
    if( confirm("Bạn xóa Todo này chứ?")){
@@ -337,7 +335,7 @@ $(document).on("click", ".delete-todo-list", function(){
     $("#taskList-Title").addClass('text-center');
     $("#taskList-Title").html("<i class='fa fa-spinner fa-pulse fa-3x fa-fw'></i>");
     var DelTodoList = $.ajax({
-        url: "https://herokutuan.herokuapp.com/task_lists/"+listId,
+        url: urlApifirst+"/task_lists/"+listId,
         method: "DELETE",
         contentType : 'application/json',
         headers: {
@@ -372,7 +370,7 @@ $(document).on("click", ".edit-todo-list", function(){
         $("#taskList-Title").html("<i class='fa fa-spinner fa-pulse fa-3x fa-fw'></i>");
         var editName = {name:newNameTodo};
         var requestEdit = $.ajax({
-            url: "https://herokutuan.herokuapp.com/task_lists/"+idEdit,
+            url: urlApifirst+"/task_lists/"+idEdit,
             method: "PATCH",
             contentType : 'application/json',
             headers: {
@@ -401,11 +399,11 @@ $("#change-pass").on("click", function(){
 });
 function changePassUser(){
     if($("form#change-form").valid()){
-        var oldPass = $("#oldpassword").val();
+        // var oldPass = $("#oldpassword").val();
         var newPass = $("#newpassword").val();
         var requestChangePass = $.ajax({
             type: 'PATCH',
-            url: "https://herokutuan.herokuapp.com/auth/password/edit",
+            url: urlApifirst+"/auth/password",
             headers: {
                 'access-token'  : localStorage.accessToken,
                 'uid' : localStorage.uid,
@@ -413,34 +411,86 @@ function changePassUser(){
             },
             data: JSON.stringify(newPass)
         });
-        requestChangePass.done(function(data, textStatus, jqXHR){
+        requestChangePass.done(function(data){
             console.log("done change");
+        });
+        requestChangePass.fail(function(){
+            alert("Susscess change");
         })
     }
+}
+//get all todo shared from api de hien thi cho tasklistShared
+var taskListShareUrl = "./snippets/taskListShared.html";
+function getAllTodoShared(){
+    var requestTitle = $.ajax({
+        type: 'GET',
+        url:   urlApifirst+"/shared",
+        headers:{
+            'access-token'  : localStorage.accessToken,
+            'uid' : localStorage.uid,
+            'client': localStorage.client
+        }
+    });
+    requestTitle.done(function(data){
+        for (var i = 0; i< data.length ; i++) {
+            $("#taskList-Title").append('<li><div class="todo-list"><a href="#" class="title-todo-list" list-id="'+ data[i].id +'">'+data[i].name+'</a><a href="#" class="delete-todo-list fl_right" list-id="'+ data[i].id +'"><i class="fa fa-trash-o"></i></a><a href="#" class="edit-todo-list fl_right" list-id="'+ data[i].id +'"><i class="fa fa-pencil"></i></a></div></li>');
+        }
+    });
+    requestTitle.fail(function(){
+        console.log("Lỗi");
+    });
+}
+//todo shared clicked,
+$('#todoShared').on("click", function(){
+    $(".todo-user").load(taskListShareUrl);
+    getAllTodoShared();//sua code tren
+})
+//get all email exist in todo app
+function getAllEmail(){
+    var allEmail = $.ajax({
+        url: urlApifirst+"/users",
+        method: "GET",
+        headers: {
+            'access-token'  : localStorage.accessToken,
+            'uid' : localStorage.uid,
+            'client': localStorage.client
+        }
+    });
+    allEmail.done(function(data, textStatus, jqXHR) {
+        for (var i = 0; i < data.length; i++) {
+            $("#selectEmailShareUser").append('<option value="' + data[i].id + '">' + data[i].email + '</option>');
+        }
+    });
 }
 // click share email
 $(document).on("click", "#btn-share", function(){
     if( $("form#share-form").valid()){
-        var EmailShare = $("#shareEmail").val();
-        var nameTodo   = $("#TitleTodoLists").text();
-        alert(nameTodo);
-        var doneItem = [];
-        var notDoneItem = [];
-        var countItemNotDone = $(".not-done #sortable li").length;
-        var countItemDone = $("#done-items li").length;
-        
-        for(var i = 0; i < countItemNotDone; i++){
-            var liTodoItem =  $('.not-done #sortable li').get(i);
-            var inputID = liTodoItem.getElementsByTagName('label')[0];
-            var nameItem = $(inputID).text();
-            notDoneItem.push(nameItem);
-        }
-        for(var i = 0; i < countItemDone; i++){
-            var liTodoItemDone =  $('#done-items li').get(i);
-            var doneID = liTodoItemDone.getElementsByTagName('p')[0];
-            var nameDoneItem = $(doneID).text();
-            doneItem.push(nameItem);
-        }
-
+        var userIdShare = $("#selectEmailShareUser").val();
+        var listId = $("#nameOfTodoList").attr("list-id");
+        var isWrite = document.querySelector("#cb-writeShare").checked;
+        var data = {user_id: userIdShare, is_write: isWrite};
+        var sendShare = $.ajax({
+            url: urlApifirst+"/task_lists/"+ listId +"/share/",
+            method: "POST",
+            contentType: "application/json",
+            headers: {
+                'access-token'  : localStorage.accessToken,
+                'uid' : localStorage.uid,
+                'client': localStorage.client
+            },
+            data: JSON.stringify(data)
+        });
+        sendShare.done(function(data, textStatus, jqXHR){
+            $('div.success-share').html('<div class="alert alert-success" style="width:200px; margin: 30px auto; " role="alert">share thành công !</div>');
+            setTimeout(function(){
+                $('div.success-share').hide();
+            },1000);
+        }) 
+        sendShare.fail(function(){
+            $('div.success-share').html('<div class="alert alert-danger" style="width:200px; margin: 30px auto; " role="alert">share không thành công !</div>');
+            setTimeout(function(){
+                $('div.success-share').hide();
+            },1000);
+        })
     }
 })

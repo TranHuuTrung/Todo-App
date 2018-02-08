@@ -14,9 +14,16 @@
         <div class="share">
             <form id="share-form">
                 <h4>Share the current list</h4>
-                <input type="text" class="form-control" id="shareEmail" name="emailtoshare" autocomplete="on" placeholder="Email">
-                <button type="submit" class="btn btn-primary" id="btn-share">Share</button>
+                <select id="selectEmailShareUser" class="form-control">
+                   
+                </select>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="cb-writeShare">
+                     write permission
+                </div>
+                <button type="button" class="btn btn-primary" id="btn-share">Share</button>
             </form>
+            <div class="success-share"></div>
         </div>
     </div>
     <div class="col-md-5">

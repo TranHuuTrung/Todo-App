@@ -1,3 +1,4 @@
+var urlApifirst = "https://herokutuan.herokuapp.com";
 $(document).ready(function(){
     
     var startUrl        = "./snippets/start.html";

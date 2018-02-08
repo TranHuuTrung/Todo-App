@@ -4,7 +4,7 @@ $("#logout").click(function(){
    var request_logout = $.ajax({
         type: 'DELETE',
         crossDomain: true,
-        url: "https://herokutuan.herokuapp.com/auth/sign_out",
+        url: urlApifirst+"/auth/sign_out",
         headers: {
             'access-token': localStorage.accessToken,
             'uid'         : localStorage.uid,
