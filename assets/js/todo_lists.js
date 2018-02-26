@@ -59,12 +59,33 @@ function getAllTodo(){
         console.log("Lỗi");
     });
 }
+//get all todo shared from api de hien thi cho tasklistShared
+var taskListShareUrl = "./snippets/taskListShared.html";
+function getAllTodoShared(){
+    var requestTitle = $.ajax({
+        type: 'GET',
+        url:   urlApifirst+"/shared",
+        headers:{
+            'access-token'  : localStorage.accessToken,
+            'uid' : localStorage.uid,
+            'client': localStorage.client
+        }
+    });
+    requestTitle.done(function(data){
+        for (var i = 0; i< data.length ; i++) {
+            $("#taskList-Title").append('<li><div class="todo-list"><a href="#" class="title-todo-list" list-id="'+ data[i].id +'">'+data[i].name+'</a><a href="#" class="delete-todoShare-list fl_right" list-id="'+ data[i].id +'"><i class="fa fa-trash-o"></i></a><a href="#" class="edit-todoShare-list fl_right" list-id="'+ data[i].id +'"><i class="fa fa-pencil"></i></a></div></li>');
+        }
+    });
+    requestTitle.fail(function(){
+        console.log("Lỗi");
+    });
+}
 // divices pages
 $(document).ready(function(){
     var show_per_page = 5;
     //getting the amount of elements inside content div
     var number_of_items = $('#taskList-Title li').length;
-    console.log("num " + number_of_items);
+    // console.log("num " + number_of_items);
     //calculate the number of pages we are going to have
     var number_of_pages = Math.ceil(number_of_items/show_per_page);
     //set the value of our hidden input fields
@@ -153,7 +174,7 @@ $('#listsTodoNav').on("click", function(){
         data: JSON.stringify(todoName)
       });
       requestCreateTodo.done(function(data, textStatus, jqXHR) {
-          console.log(data);
+        //   console.log(data);
           createItemTodo();
       });
       requestCreateTodo.fail(function(){
@@ -176,7 +197,7 @@ function createItemTodo(){
         }
     });
     CallCreateTask.done(function(data, textStatus, jqXHR){
-        console.log(data);
+        // console.log(data);
         $("#sortable").html("");
         for(var i = 0; i< data.length; i++) {
             if (data[i].done == null) {
@@ -204,9 +225,10 @@ $(document).on("click", ".title-todo-list", function(){
         },
     });
     settitle.done(function(data, textStatus, jqXHR){
+        console.log(data);
         for(var i = 0; i < data.length; i++){
             if( data[i].id == listId){
-                var nameTodoView = data[i].name;
+                var nameTodoView = data[i].name; 
             }
         }
         $("#TitleTodoLists").append('<h1 id="nameOfTodoList" list-id = "'+listId+'">'+nameTodoView+'</h1>');
@@ -228,7 +250,6 @@ function updateTodoTask() {
     });
     CallUpdateTask.done(function(data, textStatus, jqXHR){
         $("#sortable").html("");
-        console.log(data);
         for(var i = 0; i< data.length; i++) {
           if (data[i].done == null) {
             var markup = '<li class="ui-state-default"><div class="checkbox"><label><input type="checkbox" value="" todo-id ="'+data[i].id+'" />'+ data[i].name +'</label></div></li>';
@@ -328,7 +349,7 @@ $(document).on("click", "#checkDoneAll", function(){
         countTodos();
     }) 
 })
-//delete todo list
+//delete todo list user
 $(document).on("click", ".delete-todo-list", function(){
    if( confirm("Bạn xóa Todo này chứ?")){
     var listId = $(this).attr('list-id');
@@ -347,7 +368,9 @@ $(document).on("click", ".delete-todo-list", function(){
     DelTodoList.done(function(data, textStatus, jqXHR){
         $("#taskList-Title").removeClass('text-center');
         $("#taskList-Title").children().remove();
-        getAllTodo();
+        getAllTodo();  //for all todo user 
+        // getAllTodoShared(); // for user shared
+    
     });
     DelTodoList.fail(function(){
         $("#taskList-Title").removeClass('text-center');
@@ -358,6 +381,36 @@ $(document).on("click", ".delete-todo-list", function(){
         
    }
 });
+//delete todo share list
+$(document).on("click", ".delete-todoShare-list", function(){
+    if( confirm("Bạn xóa Todo này chứ?")){
+     var listId = $(this).attr('list-id');
+     $("#taskList-Title").addClass('text-center');
+     $("#taskList-Title").html("<i class='fa fa-spinner fa-pulse fa-3x fa-fw'></i>");
+     var DelTodoList = $.ajax({
+         url: urlApifirst+"/task_lists/"+listId,
+         method: "DELETE",
+         contentType : 'application/json',
+         headers: {
+             'access-token'  : localStorage.accessToken,
+             'uid' : localStorage.uid,
+             'client': localStorage.client
+         },
+     });
+     DelTodoList.done(function(data, textStatus, jqXHR){
+         $("#taskList-Title").removeClass('text-center');
+         $("#taskList-Title").children().remove(); 
+         getAllTodoShared(); // for user shared
+     });
+     DelTodoList.fail(function(){
+         $("#taskList-Title").removeClass('text-center');
+         $("#taskList-Title").children().remove();
+         getAllTodoShared(); // for user shared
+     });
+    }else{
+         
+    }
+ });
 
 //Edit name todo list
 $(document).on("click", ".edit-todo-list", function(){
@@ -392,6 +445,39 @@ $(document).on("click", ".edit-todo-list", function(){
         });
     }
 });
+//Edit name todo in task list todo Share
+$(document).on("click", ".edit-todoShare-list", function(){
+    var idEdit = $(this).attr('list-id');
+    var newNameTodo = prompt("Nhập tên mới cho TodoList");
+    if (newNameTodo == null || newNameTodo == "") {
+        console.log("error!");
+    } else {
+        $("#taskList-Title").addClass('text-center');
+        $("#taskList-Title").html("<i class='fa fa-spinner fa-pulse fa-3x fa-fw'></i>");
+        var editName = {name:newNameTodo};
+        var requestEdit = $.ajax({
+            url: urlApifirst+"/task_lists/"+idEdit,
+            method: "PATCH",
+            contentType : 'application/json',
+            headers: {
+                'access-token'  : localStorage.accessToken,
+                'uid' : localStorage.uid,
+                'client': localStorage.client
+            },
+            data: JSON.stringify(editName)
+        });
+        requestEdit.done(function(data, textStatus, jqXHR) {
+            $("#taskList-Title").removeClass('text-center');
+            $("#taskList-Title").children().remove();
+            getAllTodoShared(); // for user shared
+        });
+        requestEdit.fail(function(){
+            $("#taskList-Title").removeClass('text-center');
+            $("#taskList-Title").children().remove();
+            getAllTodoShared(); // for user shared
+        });
+    }
+});
 //click change pasword
 var changepassUrl = "./snippets/changePassword.html";
 $("#change-pass").on("click", function(){
@@ -419,31 +505,16 @@ function changePassUser(){
         })
     }
 }
-//get all todo shared from api de hien thi cho tasklistShared
-var taskListShareUrl = "./snippets/taskListShared.html";
-function getAllTodoShared(){
-    var requestTitle = $.ajax({
-        type: 'GET',
-        url:   urlApifirst+"/shared",
-        headers:{
-            'access-token'  : localStorage.accessToken,
-            'uid' : localStorage.uid,
-            'client': localStorage.client
-        }
-    });
-    requestTitle.done(function(data){
-        for (var i = 0; i< data.length ; i++) {
-            $("#taskList-Title").append('<li><div class="todo-list"><a href="#" class="title-todo-list" list-id="'+ data[i].id +'">'+data[i].name+'</a><a href="#" class="delete-todo-list fl_right" list-id="'+ data[i].id +'"><i class="fa fa-trash-o"></i></a><a href="#" class="edit-todo-list fl_right" list-id="'+ data[i].id +'"><i class="fa fa-pencil"></i></a></div></li>');
-        }
-    });
-    requestTitle.fail(function(){
-        console.log("Lỗi");
-    });
-}
+
 //todo shared clicked,
 $('#todoShared').on("click", function(){
     $(".todo-user").load(taskListShareUrl);
-    getAllTodoShared();//sua code tren
+    getAllTodoShared();//goi ham get all todo shared
+})
+//management navigation clicked
+var taskListManageUrl = "./snippets/taskListManagement.html";
+$("#managementTaskList").on("click", function(){
+    $(".todo-user").load(taskListManageUrl);
 })
 //get all email exist in todo app
 function getAllEmail(){
@@ -483,14 +554,27 @@ $(document).on("click", "#btn-share", function(){
         sendShare.done(function(data, textStatus, jqXHR){
             $('div.success-share').html('<div class="alert alert-success" style="width:200px; margin: 30px auto; " role="alert">share thành công !</div>');
             setTimeout(function(){
-                $('div.success-share').hide();
-            },1000);
+                $('div.success-share').children().remove();
+            },3000);
         }) 
         sendShare.fail(function(){
             $('div.success-share').html('<div class="alert alert-danger" style="width:200px; margin: 30px auto; " role="alert">share không thành công !</div>');
             setTimeout(function(){
-                $('div.success-share').hide();
-            },1000);
+                $('div.success-share').children().remove();
+            },3000);
         })
     }
+})
+
+// search todo
+$(document).on('keyup', '#input-search-todo', function(){
+    var textSearch = $(this).val();
+    $("#taskList-Title li").each(function(){
+        var titleTask = $(this).children(".todo-list").children(".title-todo-list").text();
+        if(titleTask.indexOf(textSearch) < 0){
+            $(this).hide();
+        }else{
+            $(this).show();
+        }
+    })
 })

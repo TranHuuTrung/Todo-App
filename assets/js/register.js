@@ -6,6 +6,7 @@
         if($("form#form-register-validate").valid()){
             var firstname_user = $("#firstname").val();
             var lastname_user  = $("#lastname").val();
+            var full_name  = firstname_user +" " + lastname_user;
             var email_user     = $("#email").val();
             var password_user  = $("#password").val();
             // alert(firstname_user);
@@ -16,8 +17,7 @@
                 crossDomain: true,
                 url : urlApifirst+"/auth",
                 data: {
-                    'first_name' : firstname_user,
-                    'last_name'  : lastname_user,
+                    'name' : full_name,
                     'email'     : email_user,
                     'password'  : password_user
                 },

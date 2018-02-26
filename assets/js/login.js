@@ -22,13 +22,15 @@ function postLogin(){
             var uid         = jqXHR.getResponseHeader("Uid");
             var accessToken = jqXHR.getResponseHeader("Access-Token");
             var client      = jqXHR.getResponseHeader("Client");
+            var name        = data.name;
             // var Id      = data('id');
-            console.log(data);
             localStorage.uid = uid;
             localStorage.accessToken = accessToken;
             localStorage.client = client;
+            localStorage.name = name;
             // localStorage.userId = Id;
             $(".loading").children().remove();
+            // $("#nameUser").text("Trung");
             //load vao trang home of user have account
             directHomeUser();
         });

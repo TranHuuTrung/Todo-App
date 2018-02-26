@@ -111,12 +111,12 @@ ul#taskList-Title li {
 ul#taskList-Title li:last-child{
     border-bottom: none;
 }
-a.delete-todo-list {
+a.delete-todo-list, a.delete-todoShare-list {
     display: inline-block;
     margin-right: 15px;
     margin-left: 20px;
 }
-a.edit-todo-list {
+a.edit-todo-list, .edit-todoShare-list {
     display: inline-block;
 }
 a.title-todo-list {
@@ -197,4 +197,21 @@ li.todo-itemDone p {
 .active_page{
     background:#555;
     color:red !important;
+}
+/* search input */
+#input-search-todo {
+    margin-bottom: 30px;
+    margin-top: 10px;
+    float: right;
+    margin-right: 15px;
+    width: 40%;
+    border: none;
+    height: 30px;
+    padding-left: 10px;
+    background: #e0d8d8;
+}
+/* management page css */
+#LabelForManagePage {
+    margin: 30px;
+    font-size: 20px;
 }
