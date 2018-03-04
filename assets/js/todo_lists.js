@@ -40,6 +40,7 @@ function getIdTodoTitle(){
     });
 }
 //get all todo from api for user id de hien thi cho tasklist
+
 function getAllTodo(){
     var requestTitle = $.ajax({
         type: 'GET',
@@ -52,6 +53,7 @@ function getAllTodo(){
     });
     requestTitle.done(function(data){
         for (var i = data.length - 1; i >= 0; i--) {
+            // arrTask.push(data[i]);
             $("#taskList-Title").append('<li><div class="todo-list"><a href="#" class="title-todo-list" list-id="'+ data[i].id +'">'+data[i].name+'</a><a href="#" class="delete-todo-list fl_right" list-id="'+ data[i].id +'"><i class="fa fa-trash-o"></i></a><a href="#" class="edit-todo-list fl_right" list-id="'+ data[i].id +'"><i class="fa fa-pencil"></i></a></div></li>');
         }
     });
@@ -59,6 +61,7 @@ function getAllTodo(){
         console.log("Lỗi");
     });
 }
+
 //get all todo shared from api de hien thi cho tasklistShared
 var taskListShareUrl = "./snippets/taskListShared.html";
 function getAllTodoShared(){
@@ -73,6 +76,7 @@ function getAllTodoShared(){
     });
     requestTitle.done(function(data){
         for (var i = 0; i< data.length ; i++) {
+            // arrTask.push(data[i]);
             $("#taskList-Title").append('<li><div class="todo-list"><a href="#" class="title-todo-list" list-id="'+ data[i].id +'">'+data[i].name+'</a><a href="#" class="delete-todoShare-list fl_right" list-id="'+ data[i].id +'"><i class="fa fa-trash-o"></i></a><a href="#" class="edit-todoShare-list fl_right" list-id="'+ data[i].id +'"><i class="fa fa-pencil"></i></a></div></li>');
         }
     });
@@ -80,36 +84,125 @@ function getAllTodoShared(){
         console.log("Lỗi");
     });
 }
-// divices pages
-$(document).ready(function(){
-    var show_per_page = 5;
-    //getting the amount of elements inside content div
-    var number_of_items = $('#taskList-Title li').length;
-    // console.log("num " + number_of_items);
-    //calculate the number of pages we are going to have
-    var number_of_pages = Math.ceil(number_of_items/show_per_page);
-    //set the value of our hidden input fields
-    $('#current_page').val(0);
-    $('#show_per_page').val(show_per_page);
-    var navigation_html = '<a class="previous_link" href="javascript:previous();">«</a>';
-    
-    var current_link = 0;
-    while (number_of_pages > current_link){
-        navigation_html += '<a class="page_link" href="javascript:go_to_page(' + current_link +')" longdesc="' + current_link +'">'+ (current_link + 1) +'</a>';
-        current_link++;
+//------------ Table management for all task list ---------
+var arrTask = [];
+var arrSearchDone = [];
+var numberRecord = 5; 
+//get all todo for management show table
+function getAllTodoManage(){
+    arrTask = [];
+    var requestTitle = $.ajax({
+        type: 'GET',
+        url: urlApifirst+"/task_lists",
+        headers:{
+            'access-token'  : localStorage.accessToken,
+            'uid' : localStorage.uid,
+            'client': localStorage.client
+        }
+    });
+    requestTitle.done(function(data){
+       // console.log(data);
+        for (var i = 0; i < data.length; i++) {
+            arrTask.push(data[i]);
+            arrTask[arrTask.length - 1].user = localStorage.uid;
+         }
+    });
+     // get task shared
+    var requestTaskShare = $.ajax({
+        type: 'GET',
+        url:   urlApifirst +"/shared",
+        headers:{
+            'access-token'  : localStorage.accessToken,
+            'uid' : localStorage.uid,
+            'client': localStorage.client
+        }
+    }); 
+    requestTaskShare.done(function(data,textStatus, jqXHR){
+        var shareTask = data;
+        $.ajax({
+            url: urlApifirst+"/users",
+            method: "GET",
+            headers:{
+                'access-token'  : localStorage.accessToken,
+                'uid' : localStorage.uid,
+                'client': localStorage.client
+            }
+        }).done(function (data, textStatus, jqXHR) {
+            for (var i = 0; i < shareTask.length; i++) {
+                arrTask.push(shareTask[i]);
+                var shareUser = "";
+                for (var j = 0; j < data.length; j++) {
+                    if (data[j].id === shareTask[i].user_id) {
+                        shareUser = data[j].email;
+                        break;
+                    }
+                }
+                arrTask[arrTask.length - 1].user = shareUser;
+                arrTask[arrTask.length - 1].share_count = '';
+                arrTask[arrTask.length - 1].todo_count = '';
+                arrTask[arrTask.length - 1].done_count = '';
+            }
+         }); 
+         showTaskList(arrTask, 1);
+         makePagination(arrTask); 
+    });   
+} 
+
+//search todo in management page
+$(document).on('keyup', '#input-search-todoManage', function(){
+    var textSearch = $(this).val();
+    arrSearchDone = [];
+    for (var i = 0; i <  arrTask.length; i++) {
+        var nameTask = arrTask[i].name;
+        if (nameTask.indexOf(textSearch) >= 0) {
+            arrSearchDone.push(arrTask[i]);
+        }
     }
-    navigation_html += '<a class="next_link" href="javascript:next();">»</a>';
-
-    $('#page_navigation').html(navigation_html);
-
-    //add active_page class to the first page link
-    $('#page_navigation .page_link:first').addClass('active_page');
-     //hide all the elements inside content div
-     $('#taskList-Title').children().css('display', 'none');
-     
-    //and show the first n (show_per_page) elements
-    $('#taskList-Title').children().slice(0, show_per_page).css('display', 'block');
+    console.log(arrSearchDone);
+    makePagination(arrSearchDone);
+    showTaskList(arrSearchDone, 1);
+   
 })
+//function get number in page from select
+function getNumberRecord(obj){
+    var options = obj.children;
+    for (var i = 0; i < options.length; i++){
+        if (options[i].selected){
+            numberRecord = options[i].value;
+        }
+    }
+    makePagination(arrTask);
+    showTaskList(arrTask, 1);
+}
+// divices pages
+//show task list and make pagination
+function makePagination(taskLists) {
+    var numberPages = Math.ceil(taskLists.length / numberRecord);
+    $(".pagination").html("");
+    for (var i = 1; i <= numberPages; i++) {
+        $(".pagination").append('<li class="page-item"><a class="page-link" href="#">' + i + '</a></li>');
+    }
+}
+
+function showTaskList(taskLists, pageNumber) {
+    var numberPages = Math.ceil(taskLists.length / numberRecord);
+    console.log(taskLists.length);
+    $('table tbody#allTaskListManage').html("");
+    var no_done = "";
+    for (var k = (pageNumber - 1) * 5; (k < pageNumber * numberRecord) && (taskLists[k] !== undefined); k++) {
+        if(k <= taskLists.length){
+            no_done = taskLists[k].todo_count - taskLists[k].done_count;           
+            $('table tbody#allTaskListManage').append(' <tr>'+'<th scope="row">'+ (k + 1) +'</th>'+'<td>'+taskLists[k].name+'</td>'+'<td>'+arrTask[k].user+'</td>'+'<td>'+taskLists[k].share_count+'</td>'+'<td>'+taskLists[k].todo_count+'</td>'+'<td>'+no_done+'</td>'+'</tr>');
+        }
+    }
+}
+//change page by clicking button
+$(document).on("click", ".page-link", function (event) {
+    event.preventDefault();
+    var pageNumber = $(this).text();
+    showTaskList(arrTask, pageNumber);
+});
+//---------- end management all tasklist-----
 //task list click 
 var taskListUrl = "./snippets/task-list.html";
 $("#tasklist").on("click", function(){
@@ -515,6 +608,8 @@ $('#todoShared').on("click", function(){
 var taskListManageUrl = "./snippets/taskListManagement.html";
 $("#managementTaskList").on("click", function(){
     $(".todo-user").load(taskListManageUrl);
+    getAllTodoManage();
+    // goi ham show tat ca cac tasklist băng bang thong qua mảng 
 })
 //get all email exist in todo app
 function getAllEmail(){

@@ -1,31 +1,40 @@
 <label id="LabelForManagePage">TaskList Management</label>
-<table class="table">
-    <thead>
-        <tr>
-        <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-        </tr>
-        <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-        </tr>
-        <tr>
-        <th scope="row">3</th>
-        <td>Larry</td>
-        <td>the Bird</td>
-        <td>@twitter</td>
-        </tr>
-    </tbody>
+<div class="tableManage col-md-10">
+    Show
+    <select class="form-control" id="showRecord" onchange="getNumberRecord(this)">
+        <option>5</option>
+        <option>10</option>
+        <option>15</option>
+        <option>20</option>
+        <option>25</option>
+    </select>
+    entries
+
+    <input id="input-search-todoManage" type="text" placeholder="Search todo">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">ListName</th>
+                <th scope="col">User</th>
+                <th scope="col">Shares</th>
+                <th scope="col">Todo count</th>
+                <th scope="col">No done</th>
+            </tr>
+        </thead>
+        <tbody id="allTaskListManage">
+            <!-- <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Trung</td>
+                <td>3</td>
+                <td>9</td>
+                <td>5</td>
+            </tr> -->
+        </tbody>
     </table>
+    <nav aria-label="Page navigation for management task">
+        <ul class="pagination justify-content-end">
+        </ul>
+    </nav>
+</div>

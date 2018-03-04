@@ -199,7 +199,7 @@ li.todo-itemDone p {
     color:red !important;
 }
 /* search input */
-#input-search-todo {
+#input-search-todo, #input-search-todoManage {
     margin-bottom: 30px;
     margin-top: 10px;
     float: right;
@@ -214,4 +214,10 @@ li.todo-itemDone p {
 #LabelForManagePage {
     margin: 30px;
     font-size: 20px;
+}
+#showRecord {
+    width: 70px;
+    display: inline;
+    margin-left: 5px;
+    margin-right: 5px;
 }
