@@ -1,3 +1,7 @@
+$(document).ready(function(){
+    var userCurrent = localStorage.uid;
+    $("#nameUser").text(userCurrent);
+})
 $("#new-todo").on("click",function(){
     //lấy giá trị thuộc tính href - chính là phần tử "#login-box"
     var loginBox = $(this).attr('href');
@@ -143,9 +147,11 @@ function getAllTodoManage(){
                 arrTask[arrTask.length - 1].done_count = '';
             }
          }); 
+         console.log(arrTask.length);
          showTaskList(arrTask, 1);
          makePagination(arrTask); 
     });   
+   
 } 
 
 //search todo in management page
