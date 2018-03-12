@@ -1,6 +1,7 @@
 $(document).ready(function(){
     var userCurrent = localStorage.uid;
-    $("#nameUser").text(userCurrent);
+    var name = userCurrent.split("@");
+    $("#nameUser").text(name[0]);
 })
 $("#new-todo").on("click",function(){
     //lấy giá trị thuộc tính href - chính là phần tử "#login-box"
@@ -156,10 +157,13 @@ function getAllTodoManage(){
 
 //search todo in management page
 $(document).on('keyup', '#input-search-todoManage', function(){
-    var textSearch = $(this).val();
+    var textSearch = $(this).val().toUpperCase();
     arrSearchDone = [];
     for (var i = 0; i <  arrTask.length; i++) {
-        var nameTask = arrTask[i].name;
+        var nameTask = arrTask[i].name.toUpperCase();
+        // if(nameTask.match(textSearch)){
+        //     arrSearchDone.push(arrTask[i]);
+        // }
         if (nameTask.indexOf(textSearch) >= 0) {
             arrSearchDone.push(arrTask[i]);
         }
@@ -185,21 +189,28 @@ function getNumberRecord(obj){
 function makePagination(taskLists) {
     var numberPages = Math.ceil(taskLists.length / numberRecord);
     $(".pagination").html("");
-    for (var i = 1; i <= numberPages; i++) {
-        $(".pagination").append('<li class="page-item"><a class="page-link" href="#">' + i + '</a></li>');
+    if(numberPages <= 1){
+        $(".pagination").append('');
+    }else{
+        for (var i = 1; i <= numberPages; i++) {
+            $(".pagination").append('<li class="page-item"><a class="page-link" href="#">' + i + '</a></li>');
+        }
     }
 }
 
 function showTaskList(taskLists, pageNumber) {
-    var numberPages = Math.ceil(taskLists.length / numberRecord);
+    // var numberPages = Math.ceil(taskLists.length / numberRecord);
     console.log(taskLists.length);
     $('table tbody#allTaskListManage').html("");
     var no_done = "";
     for (var k = (pageNumber - 1) * 5; (k < pageNumber * numberRecord) && (taskLists[k] !== undefined); k++) {
         if(k <= taskLists.length){
-            no_done = taskLists[k].todo_count - taskLists[k].done_count;           
+            no_done = taskLists[k].todo_count - taskLists[k].done_count;          
             $('table tbody#allTaskListManage').append(' <tr>'+'<th scope="row">'+ (k + 1) +'</th>'+'<td>'+taskLists[k].name+'</td>'+'<td>'+arrTask[k].user+'</td>'+'<td>'+taskLists[k].share_count+'</td>'+'<td>'+taskLists[k].todo_count+'</td>'+'<td>'+no_done+'</td>'+'</tr>');
         }
+        // // $(".show-count").append("Showing"+);; 
+        // var numberStart = $("#allTaskListManage tr:first th").text();  
+        // console.log(numberStart);
     }
 }
 //change page by clicking button
